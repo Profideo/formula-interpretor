@@ -13,7 +13,7 @@ use Symfony\Component\Console\Output\OutputInterface;
  * Class ChangePhpExcelAttributeVisibilityCommand
  * @package Profideo\FormulaInterpretor\Command
  */
-class ChangeAttributeVisibilityCommand extends ContainerAwareCommand
+class FormulainterpretorChangeAttributeVisibilityCommand extends ContainerAwareCommand
 {
     /**
      * @var OutputInterface $output
