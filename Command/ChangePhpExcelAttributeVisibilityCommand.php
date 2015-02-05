@@ -32,6 +32,7 @@ class ChangePhpExcelAttributeVisibilityCommand extends ContainerAwareCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        throw new \Exception("ChangePhpExcelAttributeVisibilityCommand->execute");
         /** @var OutputInterface $output */
         $this->output = $output;
 
