@@ -13,7 +13,7 @@ use Symfony\Component\Console\Output\OutputInterface;
  * Class ChangePhpExcelAttributeVisibilityCommand
  * @package Profideo\FormulaInterpretor\Command
  */
-class ChangePhpExcelAttributeVisibilityCommand extends ContainerAwareCommand
+class FormulaInterpreterChangeAttributeVisibilityCommand extends ContainerAwareCommand
 {
     /**
      * @var OutputInterface $output
@@ -26,7 +26,7 @@ class ChangePhpExcelAttributeVisibilityCommand extends ContainerAwareCommand
     protected function configure()
     {
         $this
-            ->setName('excelformulas:changePhpExcelAttributeVisibility')
+            ->setName('formulainterpretor:changeAttributeVisibility')
             ->setDescription('Change visibility of an PHPExcel_Calculation variable visibility to be able to create custom functions');
     }
 
