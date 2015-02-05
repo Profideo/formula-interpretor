@@ -1,5 +1,5 @@
 <?php
-namespace Profideo\FormulaInterpretor\Command;
+namespace Profideo\FormulaInterpretorBundle\Command;
 
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputArgument;

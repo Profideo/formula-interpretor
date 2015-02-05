@@ -12,10 +12,5 @@
     ],
     "require": {
         "phpoffice/phpexcel": "@stable"
-    },
-    "autoload": {
-        "psr-0": {
-            "Profideo\\FormulaInterpretor\\": "src/"
-        }
     }
 }

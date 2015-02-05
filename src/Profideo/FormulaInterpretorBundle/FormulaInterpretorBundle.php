@@ -1,7 +1,7 @@
 <?php
-namespace Profideo\FormulaInterpretor;
+namespace Profideo\FormulaInterpretorBundle;
 
-use Profideo\FormulaInterpretor\Command\ChangeAttributeVisibilityCommand;
+use Profideo\FormulaInterpretorBundle\Command\FormulainterpretorChangeAttributeVisibilityCommand;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
 class FormulaInterpretorBundle extends Bundle
@@ -12,6 +12,6 @@ class FormulaInterpretorBundle extends Bundle
     public function registerCommands(Application $application)
     {
         // Register command
-        $application->add(new ChangeAttributeVisibilityCommand());
+        $application->add(new FormulainterpretorChangeAttributeVisibilityCommand());
     }
 }

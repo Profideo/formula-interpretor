@@ -1,5 +1,5 @@
 <?php
-namespace Profideo\FormulaInterpretor;
+namespace Profideo\FormulaInterpretorBundle\Calculation;
 
 use \PHPExcel_Calculation;
 
