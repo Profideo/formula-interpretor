@@ -12,8 +12,5 @@
     ],
     "require": {
         "phpoffice/phpexcel": "dev-master"
-    },
-    "autoload": {
-        "psr-0": { "Profideo\\FormulaInterpretor\\Command\\ChangePhpExcelAttributeVisibilityCommand": "" }
     }
 }
