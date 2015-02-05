@@ -15,7 +15,7 @@
     },
     "autoload": {
         "psr-0": {
-            "Profideo\\FormulaInterpretor\\": ""
+            "Profideo\\FormulaInterpretor\\": "src/"
         }
     }
 }
