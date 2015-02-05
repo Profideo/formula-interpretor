@@ -2,8 +2,8 @@
 namespace Profideo\FormulaInterpretor;
 
 /**
- * Class CalculationException
- * @package FormulaCalculationBundle\lib
+ * Class NotAllowedFormulaException
+ * @package Profideo\FormulaInterpretor
  */
 class NotAllowedFormulaException extends \Exception
 {

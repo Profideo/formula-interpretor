@@ -1,7 +1,10 @@
 <?php
 namespace Profideo\FormulaInterpretor;
 
-
+/**
+ * Class CalculationCustom
+ * @package Profideo\FormulaInterpretor
+ */
 class CalculationCustom
 {
     const CATEGORY_CUSTOM				    = 'Custom';

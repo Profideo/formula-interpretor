@@ -9,6 +9,9 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * Change visibility of an PHPExcel_Calculation variable visibility to be able to create custom functions
+ *
+ * Class ChangePhpExcelAttributeVisibilityCommand
+ * @package Profideo\FormulaInterpretor\Command
  */
 class ChangePhpExcelAttributeVisibilityCommand extends ContainerAwareCommand
 {
@@ -32,7 +35,6 @@ class ChangePhpExcelAttributeVisibilityCommand extends ContainerAwareCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        throw new \Exception("ChangePhpExcelAttributeVisibilityCommand->execute");
         /** @var OutputInterface $output */
         $this->output = $output;
 

@@ -4,10 +4,10 @@ namespace Profideo\FormulaInterpretor;
 use \PHPExcel_Calculation;
 
 /**
- * Class CalculationClient
- * @package AppBundle\Calculation
+ * Class AbstractCalculationClient
+ * @package Profideo\FormulaInterpretor
  */
-class CalculationClient extends PHPExcel_Calculation
+abstract class AbstractCalculationClient extends PHPExcel_Calculation
 {
     protected static $instance;
 
