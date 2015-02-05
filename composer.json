@@ -1,5 +1,5 @@
 {
-    "name": "isow/pfdformulainterpreter",
+    "name": "profideo/formula-interpretor",
     "description": "Tool to interprete formulas",
     "keywords": ["Formula","Interpreter","Profideo"],
     "type": "library",
