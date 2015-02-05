@@ -11,6 +11,6 @@
         }
     ],
     "require": {
-        "phpoffice/phpexcel": "1.8.0"
+        "phpoffice/phpexcel": "@stable"
     }
 }
