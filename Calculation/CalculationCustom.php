@@ -1,5 +1,5 @@
 <?php
-namespace AppBundle\Calculation;
+namespace Profideo\FormulaInterpretor;
 
 
 class CalculationCustom
