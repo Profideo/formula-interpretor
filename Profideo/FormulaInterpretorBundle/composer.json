@@ -15,7 +15,8 @@
     },
     "autoload": {
         "psr-0": {
-            "Profideo\\FormulaInterpretorBundle": "src/"
+            "Profideo\\FormulaInterpretorBundle": ""
         }
-    }
+    },
+    "target-dir": "Profideo/FormulaInterpretorBundle"
 }
