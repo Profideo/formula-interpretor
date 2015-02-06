@@ -10,8 +10,14 @@
             "homepage": "http://profideo.com"
         }
     ],
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "git@github.com:sowbiba/PHPExcel.git"
+        }
+    ],
     "require": {
-        "sowbiba/phpexcel": "@stable"
+        "sowbiba/phpexcel": "dev-master"
     },
     "autoload": {
         "psr-0": {
