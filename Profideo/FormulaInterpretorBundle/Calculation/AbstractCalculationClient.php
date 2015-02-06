@@ -36,15 +36,15 @@ abstract class AbstractCalculationClient extends PHPExcel_Calculation
         self::$_PHPExcelFunctions = array_merge(self::$_PHPExcelFunctions, [
             'CNA'       			=> array('category'			=>	CalculationCustom::CATEGORY_CUSTOM,
                 'functionCall'		=>	__NAMESPACE__ . '\CalculationCustom::CNA',
-                'argumentCount'	=>	'1'
+                'argumentCount'	=>	'1-2'
             ),
             'CNC'       			=> array('category'			=>	CalculationCustom::CATEGORY_CUSTOM,
                 'functionCall'		=>	__NAMESPACE__ . '\CalculationCustom::CNC',
-                'argumentCount'	=>	'1'
+                'argumentCount'	=>	'1-2'
             ),
             'CNANC'       			=> array('category'			=>	CalculationCustom::CATEGORY_CUSTOM,
                 'functionCall'		=>	__NAMESPACE__ . '\CalculationCustom::CNANC',
-                'argumentCount'	=>	'1'
+                'argumentCount'	=>	'1-2'
             ),
         ]);
 

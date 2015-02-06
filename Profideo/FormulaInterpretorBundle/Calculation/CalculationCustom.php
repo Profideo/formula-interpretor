@@ -15,13 +15,13 @@ class CalculationCustom
      * @param	mixed	$value		Value to check
      * @return	boolean
      */
-    public static function CNA($value = NULL) {
+    public static function CNA($value, $default) {
         $value		= self::flattenSingleValue($value);
 
-        if($value != '#NA') {
-            return false;
+        if($value == '#NA') {
+            return $default;
         }
-        return true;
+        return $value;
     }	//	function CNA()
 
     /**
@@ -30,13 +30,13 @@ class CalculationCustom
      * @param	mixed	$value		Value to check
      * @return	boolean
      */
-    public static function CNC($value = NULL) {
+    public static function CNC($value, $default) {
         $value		= self::flattenSingleValue($value);
 
-        if($value != '#NC') {
-            return false;
+        if($value == '#NC') {
+            return $default;
         }
-        return true;
+        return $value;
     }	//	function CNC()
 
     /**
@@ -45,13 +45,13 @@ class CalculationCustom
      * @param	mixed	$value		Value to check
      * @return	boolean
      */
-    public static function CNANC($value = NULL) {
+    public static function CNANC($value, $default) {
         $value		= self::flattenSingleValue($value);
 
-        if($value != '#NA' && $value != '#NC') {
-            return false;
+        if($value == '#NA' || $value == '#NC') {
+            return $default;
         }
-        return true;
+        return $value;
     }	//	function CNANC()
 
 
