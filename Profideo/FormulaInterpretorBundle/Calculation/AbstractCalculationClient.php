@@ -73,9 +73,11 @@ abstract class AbstractCalculationClient extends PHPExcel_Calculation
                     throw new NotAllowedFormulaException(sprintf("La fonction %s n'est pas autorisée", str_replace("(", "", $formula_part['value'])));
                 }
             }
-        } catch (CalculationException $e) {
+        } catch (\PHPExcel_Calculation_Exception $e) {
+            var_dump("PHPExcel_Calculation_Exception");
             return false;
         } catch (NotAllowedFormulaException $e) {
+            var_dump("NotAllowedFormulaException");
             return false;
         }
         return true;
@@ -107,7 +109,7 @@ abstract class AbstractCalculationClient extends PHPExcel_Calculation
             throw new \Exception("The formula is not good");
         }
 
-        return self::getCalculationInstance()->_calculateFormulaValue($formula);
+        return self::getCalculationInstance()->_calculateFormulaValue($formula, null, null);
     }
 
     /**
