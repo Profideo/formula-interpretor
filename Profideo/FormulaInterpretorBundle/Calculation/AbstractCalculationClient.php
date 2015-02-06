@@ -26,7 +26,7 @@ abstract class AbstractCalculationClient extends PHPExcel_Calculation
         'CNANC'
     ];
 
-    public static function getCalculationInstance()
+    private static function getCalculationInstance()
     {
         if (!isset(self::$instance) || (self::$instance === NULL)) {
             self::$instance = parent::getInstance();
@@ -58,7 +58,7 @@ abstract class AbstractCalculationClient extends PHPExcel_Calculation
      * @param $formula
      * @return bool
      */
-    public static function isFormulaValid($formula)
+    private static function isFormulaValid($formula)
     {
         try {
             $formula_parts = self::getCalculationInstance()->parseFormula($formula);
@@ -76,7 +76,6 @@ abstract class AbstractCalculationClient extends PHPExcel_Calculation
         } catch (CalculationException $e) {
             return false;
         } catch (NotAllowedFormulaException $e) {
-            var_dump($e->getMessage());
             return false;
         }
         return true;

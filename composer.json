@@ -13,6 +13,14 @@
     "require": {
         "phpoffice/phpexcel": "@stable"
     },
+    "scripts": {
+        "post-install-cmd": [
+            "php app/console formulainterpretor:changeAttributeVisibility"
+        ],
+        "post-update-cmd": [
+            "php app/console formulainterpretor:changeAttributeVisibility"
+        ]
+    },
     "autoload": {
         "psr-0": {
             "Profideo": ""
