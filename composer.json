@@ -17,7 +17,7 @@
         }
     ],
     "require": {
-        "sowbiba/phpexcel": "dev-master"
+        "sowbiba/phpexcel": "dev-develop"
     },
     "autoload": {
         "psr-0": {
