@@ -26,7 +26,33 @@ abstract class AbstractCalculationClient extends PHPExcel_Calculation
         'CNANC'
     ];
 
-    private static function getCalculationInstance()
+    /**
+     * Defines a custom function and allow it
+     *
+     * @example :
+     *
+     * addCustomFunction('CNA', '\Pfd\AppBundle\CustomFormulas\CalculationCustom::CNA', '1-2')
+     * function named CNA, defined in \Pfd\AppBundle\CustomFormulas\CalculationCustom, method CNA
+     * which needs a required argument and an optional one
+     *
+     * @param $formulaName
+     * @param $method The entire method name with namespace
+     * @param $argumentsCount The number of arguments needed by the function
+     */
+    public static function addCustomFunction($formulaName, $method, $argumentsCount)
+    {
+        self::$_PHPExcelFunctions = array_merge(self::$_PHPExcelFunctions, [
+            $formulaName       		=> array(
+                'category'			=>	CalculationCustom::CATEGORY_CUSTOM,
+                'functionCall'		=>	$method,
+                'argumentCount'	    =>	$argumentsCount
+            )
+        ]);
+
+        array_push(self::$_allowedFunctions, $formulaName);
+    }
+
+    protected static function getCalculationInstance()
     {
         if (!isset(self::$instance) || (self::$instance === NULL)) {
             self::$instance = parent::getInstance();
@@ -34,15 +60,18 @@ abstract class AbstractCalculationClient extends PHPExcel_Calculation
         }
 
         self::$_PHPExcelFunctions = array_merge(self::$_PHPExcelFunctions, [
-            'CNA'       			=> array('category'			=>	CalculationCustom::CATEGORY_CUSTOM,
+            'CNA'       			=> array(
+                'category'			=>	CalculationCustom::CATEGORY_CUSTOM,
                 'functionCall'		=>	__NAMESPACE__ . '\CalculationCustom::CNA',
                 'argumentCount'	=>	'1-2'
             ),
-            'CNC'       			=> array('category'			=>	CalculationCustom::CATEGORY_CUSTOM,
+            'CNC'       			=> array(
+                'category'			=>	CalculationCustom::CATEGORY_CUSTOM,
                 'functionCall'		=>	__NAMESPACE__ . '\CalculationCustom::CNC',
                 'argumentCount'	=>	'1-2'
             ),
-            'CNANC'       			=> array('category'			=>	CalculationCustom::CATEGORY_CUSTOM,
+            'CNANC'       			=> array(
+                'category'			=>	CalculationCustom::CATEGORY_CUSTOM,
                 'functionCall'		=>	__NAMESPACE__ . '\CalculationCustom::CNANC',
                 'argumentCount'	=>	'1-2'
             ),
@@ -58,7 +87,7 @@ abstract class AbstractCalculationClient extends PHPExcel_Calculation
      * @param $formula
      * @return bool
      */
-    private static function isFormulaValid($formula)
+    public static function isFormulaValid($formula)
     {
         try {
             $formula_parts = self::getCalculationInstance()->parseFormula($formula);
@@ -66,6 +95,7 @@ abstract class AbstractCalculationClient extends PHPExcel_Calculation
             foreach($formula_parts as $formula_part) {
                 $php_excel_formulas = self::getCalculationInstance()->listAllFunctionNames();
 
+                //Checks if all the functions are allowed, throws and exception if not
                 if($formula_part['type'] == "Function" &&
                     in_array(str_replace("(", "", $formula_part['value']), $php_excel_formulas) &&
                     !in_array(str_replace("(", "", $formula_part['value']), self::$_allowedFunctions)
