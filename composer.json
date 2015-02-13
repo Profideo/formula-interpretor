@@ -6,13 +6,15 @@
     "license": "LGPL",
     "minimum-stability": "dev",
     "authors": [
-        {
-            "name": "Profideo",
-            "homepage": "http://profideo.com"
-        }
+	{
+		"name": "Ibrahima SOW",
+		"email": "isow@profideo.com",
+		"company": "Profideo",
+		"role": "Developer"
+	}
     ],
     "require": {
-        "sowbiba/phpexcel": "dev-master"
+        "profideo-ci/phpexcel": "dev-master"
     },
     "autoload": {
         "psr-0": {
