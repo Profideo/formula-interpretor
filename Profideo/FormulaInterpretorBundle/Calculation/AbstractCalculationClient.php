@@ -52,7 +52,7 @@ abstract class AbstractCalculationClient extends PHPExcel_Calculation
         array_push(self::$_allowedFunctions, $formulaName);
     }
 
-    protected static function getCalculationInstance()
+    private static function getCalculationInstance()
     {
         if (!isset(self::$instance) || (self::$instance === NULL)) {
             self::$instance = parent::getInstance();
@@ -90,7 +90,9 @@ abstract class AbstractCalculationClient extends PHPExcel_Calculation
     public static function isFormulaValid($formula)
     {
         try {
-            $formula_parts = self::getCalculationInstance()->parseFormula($formula);
+            $formula = self::getCalculationInstance()->_translateFormulaToEnglish($formula);
+
+            $formula_parts = self::getFormulaParts($formula);
 
             foreach($formula_parts as $formula_part) {
                 $php_excel_formulas = self::getCalculationInstance()->listAllFunctionNames();
@@ -104,10 +106,8 @@ abstract class AbstractCalculationClient extends PHPExcel_Calculation
                 }
             }
         } catch (\PHPExcel_Calculation_Exception $e) {
-            var_dump("PHPExcel_Calculation_Exception");
             return false;
         } catch (NotAllowedFormulaException $e) {
-            var_dump("NotAllowedFormulaException");
             return false;
         }
         return true;
@@ -170,7 +170,7 @@ abstract class AbstractCalculationClient extends PHPExcel_Calculation
      * @return mixed
      * @throws \Exception
      */
-    private static function replaceFieldsValuesInFormula($formula, $fieldIds, $values)
+    public static function replaceFieldsValuesInFormula($formula, $fieldIds, $values)
     {
         if(!self::valuesComplete($fieldIds, $values)) {
             throw new \Exception("All the references are not in array of values");
@@ -209,7 +209,7 @@ abstract class AbstractCalculationClient extends PHPExcel_Calculation
      * @param $str
      * @return array
      */
-    private static function getFieldIds($str) {
+    public static function getFieldIds($str) {
         $fieldIds = [];
         preg_match_all('/C\d+/', $str, $matches);
 
@@ -217,6 +217,11 @@ abstract class AbstractCalculationClient extends PHPExcel_Calculation
             $fieldIds[] = explode('C', $match)[1];
         }
         return $fieldIds;
+    }
+
+    public static function getFormulaParts($formula)
+    {
+        return self::getCalculationInstance()->parseFormula($formula);
     }
 
 } 
