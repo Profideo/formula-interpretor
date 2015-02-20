@@ -9,6 +9,8 @@ use \PHPExcel_Calculation;
  */
 abstract class AbstractCalculationClient extends PHPExcel_Calculation
 {
+    const CATEGORY_CUSTOM				    = 'Custom';
+
     protected static $instance;
 
     private static $_allowedFunctions = [
@@ -19,10 +21,7 @@ abstract class AbstractCalculationClient extends PHPExcel_Calculation
         'CONCATENATE',
         'IF',
         'OR',
-        'AND',
-        'CNA',
-        'CNC',
-        'CNANC'
+        'AND'
     ];
 
     /**
@@ -42,7 +41,7 @@ abstract class AbstractCalculationClient extends PHPExcel_Calculation
     {
         self::$_PHPExcelFunctions = array_merge(self::$_PHPExcelFunctions, [
             $formulaName       		=> array(
-                'category'			=>	CalculationCustom::CATEGORY_CUSTOM,
+                'category'			=>	self::CATEGORY_CUSTOM,
                 'functionCall'		=>	$method,
                 'argumentCount'	    =>	$argumentsCount
             )
@@ -57,25 +56,6 @@ abstract class AbstractCalculationClient extends PHPExcel_Calculation
             self::$instance = parent::getInstance();
             self::$instance->setLocale('fr');
         }
-
-        self::$_PHPExcelFunctions = array_merge(self::$_PHPExcelFunctions, [
-            'CNA'       			=> array(
-                'category'			=>	CalculationCustom::CATEGORY_CUSTOM,
-                'functionCall'		=>	__NAMESPACE__ . '\CalculationCustom::CNA',
-                'argumentCount'	=>	'2'
-            ),
-            'CNC'       			=> array(
-                'category'			=>	CalculationCustom::CATEGORY_CUSTOM,
-                'functionCall'		=>	__NAMESPACE__ . '\CalculationCustom::CNC',
-                'argumentCount'	=>	'2'
-            ),
-            'CNANC'       			=> array(
-                'category'			=>	CalculationCustom::CATEGORY_CUSTOM,
-                'functionCall'		=>	__NAMESPACE__ . '\CalculationCustom::CNANC',
-                'argumentCount'	=>	'2'
-            ),
-        ]);
-
 
         return self::$instance;
     }
