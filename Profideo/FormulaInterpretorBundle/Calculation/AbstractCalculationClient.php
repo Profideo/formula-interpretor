@@ -17,7 +17,6 @@ abstract class AbstractCalculationClient extends PHPExcel_Calculation
         'POWER',
         'ROUND',
         'CONCATENATE',
-        'COS',
         'IF',
         'OR',
         'AND',
@@ -63,17 +62,17 @@ abstract class AbstractCalculationClient extends PHPExcel_Calculation
             'CNA'       			=> array(
                 'category'			=>	CalculationCustom::CATEGORY_CUSTOM,
                 'functionCall'		=>	__NAMESPACE__ . '\CalculationCustom::CNA',
-                'argumentCount'	=>	'1-2'
+                'argumentCount'	=>	'2'
             ),
             'CNC'       			=> array(
                 'category'			=>	CalculationCustom::CATEGORY_CUSTOM,
                 'functionCall'		=>	__NAMESPACE__ . '\CalculationCustom::CNC',
-                'argumentCount'	=>	'1-2'
+                'argumentCount'	=>	'2'
             ),
             'CNANC'       			=> array(
                 'category'			=>	CalculationCustom::CATEGORY_CUSTOM,
                 'functionCall'		=>	__NAMESPACE__ . '\CalculationCustom::CNANC',
-                'argumentCount'	=>	'1-2'
+                'argumentCount'	=>	'2'
             ),
         ]);
 
@@ -214,7 +213,10 @@ abstract class AbstractCalculationClient extends PHPExcel_Calculation
         preg_match_all('/C\d+/', $str, $matches);
 
         foreach($matches[0] as $match) {
-            $fieldIds[] = explode('C', $match)[1];
+            $fieldId = explode('C', $match)[1];
+            if(!in_array($fieldId, $fieldIds)) {
+                $fieldIds[] = $fieldId;
+            }
         }
         return $fieldIds;
     }
