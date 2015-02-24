@@ -68,7 +68,7 @@ abstract class AbstractCalculationClient extends PHPExcel_Calculation
      */
     public static function isFormulaValid($formula)
     {
-        try {
+     //   try {
             $formula = self::getCalculationInstance()->_translateFormulaToEnglish($formula);
 
             $formula_parts = self::getFormulaParts($formula);
@@ -84,11 +84,11 @@ abstract class AbstractCalculationClient extends PHPExcel_Calculation
                     throw new NotAllowedFormulaException(sprintf("La fonction %s n'est pas autorisée", str_replace("(", "", $formula_part['value'])));
                 }
             }
-        } catch (\PHPExcel_Calculation_Exception $e) {
-            return false;
-        } catch (NotAllowedFormulaException $e) {
-            return false;
-        }
+//        } catch (\PHPExcel_Calculation_Exception $e) {
+//            return false;
+//        } catch (NotAllowedFormulaException $e) {
+//            return false;
+//        }
         return true;
     }
 
