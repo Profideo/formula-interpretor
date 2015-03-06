@@ -60,36 +60,21 @@ abstract class AbstractCalculationClient extends PHPExcel_Calculation
         return self::$instance;
     }
 
+    public static function translateFormula($formula)
+    {
+        return self::getCalculationInstance()->_translateFormulaToEnglish($formula);
+    }
+
     /**
-     * Checks if the formula is valid. Return false if not and yes if the formula is valid
+     * Checks if the formula is valid.
      *
      * @param $formula
-     * @return bool
+     *
+     * @return array
      */
     public static function isFormulaValid($formula)
     {
-     //   try {
-            $formula = self::getCalculationInstance()->_translateFormulaToEnglish($formula);
-
-            $formula_parts = self::getFormulaParts($formula);
-
-            foreach($formula_parts as $formula_part) {
-                $php_excel_formulas = self::getCalculationInstance()->listAllFunctionNames();
-
-                //Checks if all the functions are allowed, throws and exception if not
-                if($formula_part['type'] == "Function" &&
-                    in_array(str_replace("(", "", $formula_part['value']), $php_excel_formulas) &&
-                    !in_array(str_replace("(", "", $formula_part['value']), self::$_allowedFunctions)
-                ) {
-                    throw new NotAllowedFormulaException(sprintf("La fonction %s n'est pas autorisée", str_replace("(", "", $formula_part['value'])));
-                }
-            }
-//        } catch (\PHPExcel_Calculation_Exception $e) {
-//            return false;
-//        } catch (NotAllowedFormulaException $e) {
-//            return false;
-//        }
-        return true;
+        return self::getFormulaParts($formula);
     }
 
     /**
@@ -180,25 +165,6 @@ abstract class AbstractCalculationClient extends PHPExcel_Calculation
         $len = strpos($string,$end,$ini) - $ini;
 
         return substr($string,$ini,$len);
-    }
-
-    /**
-     * Returns fieldsIds in the string given
-     * FieldIds are represented by C#### -> # is numeric character
-     * @param $str
-     * @return array
-     */
-    public static function getFieldIds($str) {
-        $fieldIds = [];
-        preg_match_all('/C\d+/', $str, $matches);
-
-        foreach($matches[0] as $match) {
-            $fieldId = explode('C', $match)[1];
-            if(!in_array($fieldId, $fieldIds)) {
-                $fieldIds[] = $fieldId;
-            }
-        }
-        return $fieldIds;
     }
 
     public static function getFormulaParts($formula)
