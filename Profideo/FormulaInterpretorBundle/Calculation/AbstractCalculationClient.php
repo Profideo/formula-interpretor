@@ -78,35 +78,6 @@ abstract class AbstractCalculationClient extends PHPExcel_Calculation
     }
 
     /**
-     * Replace fieldsIds by values given,
-     * Checks if the formula is valid,
-     * If it is, calculate and return formula value
-     *
-     * @param $formula
-     * @param $values
-     * @return mixed|null|void
-     * @throws \Exception
-     */
-    public static function getFormulaResult($formula, $values)
-    {
-        if(empty($formula)) {
-            throw new \Exception("Formula cannot be empty");
-        }
-
-        $formula = self::getCalculationInstance()->_translateFormulaToEnglish($formula);
-
-        $fieldIds = self::getFieldIds($formula);
-
-        $formula = self::replaceFieldsValuesInFormula($formula, $fieldIds, $values);
-
-        if(!self::isFormulaValid($formula)) {
-            throw new \Exception("The formula is not good");
-        }
-
-        return self::getCalculationInstance()->_calculateFormulaValue($formula, null, null);
-    }
-
-    /**
      * Check if all fields (in the formula) are if the array of values given
      *
      * @param $fieldIds
@@ -167,9 +138,71 @@ abstract class AbstractCalculationClient extends PHPExcel_Calculation
         return substr($string,$ini,$len);
     }
 
+    /**
+     * Split formula in logical parts as array
+     *
+     * @param $formula
+     * @return array
+     */
     public static function getFormulaParts($formula)
     {
         return self::getCalculationInstance()->parseFormula($formula);
     }
 
+    /**
+     * Return the result of a formula.
+     * Set cellValues in each column of first line and execute formula
+     *
+     * @example
+     *      cellValues = [1, 12, 34, 56]
+     * Set  A1 = 1
+     *      B1 = 12
+     *      C1 = 34
+     *      D1 = 56
+     * Set formula in Z999 and return the formula result according to A1, B1, C1, D1
+     *
+     * @param $cellValues
+     * @param $formula
+     * @return mixed
+     * @throws \PHPExcel_Calculation_Exception
+     * @throws \PHPExcel_Exception
+     */
+    public static function getFormulaResult($cellValues, $formula)
+    {
+        $objPHPExcel = new \PHPExcel();
+        $objPHPExcel->setActiveSheetIndex(0);
+        $sheet = $objPHPExcel->getActiveSheet();
+
+        $tmpformula = static::fillCellValuesAndFixFormula($formula, $cellValues, $sheet);
+
+        $calculationClient = self::getInstance($objPHPExcel);
+
+        return $calculationClient->calculateFormula($tmpformula, 'Z999', $sheet->getCell('Z999'));
+    }
+
+    /**
+     * Set cellValues in each column of first line
+     * If a treatment needs to be done when a cell is filled, for example modify the formula
+     * or if the cellValues array is not uni-dimensional, you need to override this method
+     *
+     * @param $formula
+     * @param $cellValues
+     * @param $sheet
+     * @param int $startCellId
+     * @return mixed
+     */
+    public static function fillCellValuesAndFixFormula($formula, $cellValues, $sheet, $startCellId = 0)
+    {
+        $column = $startCellId;
+
+        foreach ($cellValues as $value) {
+            // For better performances, we always stay on the first row of the sheet.
+            $cell = $sheet->getCellByColumnAndRow($column, 1);
+            $cell->setValue($value);
+
+            $column++;
+        }
+
+        return $formula;
+    }
 } 
