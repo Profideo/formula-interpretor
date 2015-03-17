@@ -4,7 +4,6 @@
     "keywords": ["Formula","Interpreter","Profideo"],
     "type": "library",
     "license": "LGPL",
-    "minimum-stability": "dev",
     "authors": [
 	{
 		"name": "Ibrahima SOW",
@@ -14,7 +13,7 @@
 	}
     ],
     "require": {
-        "profideo-ci/phpexcel": "dev-master"
+        "profideo-ci/phpexcel": "1.0"
     },
     "autoload": {
         "psr-0": {
