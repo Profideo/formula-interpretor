@@ -66,85 +66,13 @@ abstract class AbstractCalculationClient extends PHPExcel_Calculation
     }
 
     /**
-     * Checks if the formula is valid.
+     * Checks if the formula is valid by splitting it in logical parts
      *
      * @param $formula
      *
      * @return array
      */
     public static function isFormulaValid($formula)
-    {
-        return self::getFormulaParts($formula);
-    }
-
-    /**
-     * Check if all fields (in the formula) are if the array of values given
-     *
-     * @param $fieldIds
-     * @param $values
-     * @return bool
-     */
-    private static function valuesComplete($fieldIds, $values)
-    {
-        foreach($fieldIds as $fieldId) {
-            //check if the reference value is given
-            if(!array_key_exists($fieldId, $values)) {
-                return false;
-            }
-        }
-        return true;
-    }
-
-    /**
-     * Checks if all fields are in the array of values given
-     * If true, replace fieldIds by theirs values
-     *
-     * @param $formula
-     * @param $fieldIds
-     * @param $values
-     * @return mixed
-     * @throws \Exception
-     */
-    public static function replaceFieldsValuesInFormula($formula, $fieldIds, $values)
-    {
-        if(!self::valuesComplete($fieldIds, $values)) {
-            throw new \Exception("All the references are not in array of values");
-        }
-
-        foreach($fieldIds as $fieldId) {
-            $formula = str_replace("C".$fieldId, $values[$fieldId], $formula);
-        }
-
-        return $formula;
-    }
-
-    /**
-     * Get the characters between start and end patterns in the string given
-     *
-     * @param $string
-     * @param $start
-     * @param $end
-     * @return string
-     */
-    private function get_string_between($string, $start, $end){
-        $string = " ".$string;
-        $ini = strpos($string,$start);
-
-        if ($ini == 0) return "";
-
-        $ini += strlen($start);
-        $len = strpos($string,$end,$ini) - $ini;
-
-        return substr($string,$ini,$len);
-    }
-
-    /**
-     * Split formula in logical parts as array
-     *
-     * @param $formula
-     * @return array
-     */
-    public static function getFormulaParts($formula)
     {
         return self::getCalculationInstance()->parseFormula($formula);
     }
