@@ -66,7 +66,7 @@ abstract class AbstractCalculationClient extends PHPExcel_Calculation
     }
 
     /**
-     * Checks if the formula is valid.
+     * Checks if the formula is valid by splitting it in logical parts
      *
      * @param $formula
      *
@@ -74,102 +74,63 @@ abstract class AbstractCalculationClient extends PHPExcel_Calculation
      */
     public static function isFormulaValid($formula)
     {
-        return self::getFormulaParts($formula);
+        return self::getCalculationInstance()->parseFormula($formula);
     }
 
     /**
-     * Replace fieldsIds by values given,
-     * Checks if the formula is valid,
-     * If it is, calculate and return formula value
+     * Return the result of a formula.
+     * Set cellValues in each column of first line and execute formula
      *
+     * @example
+     *      cellValues = [1, 12, 34, 56]
+     * Set  A1 = 1
+     *      B1 = 12
+     *      C1 = 34
+     *      D1 = 56
+     * Set formula in Z999 and return the formula result according to A1, B1, C1, D1
+     *
+     * @param $cellValues
      * @param $formula
-     * @param $values
-     * @return mixed|null|void
-     * @throws \Exception
-     */
-    public static function getFormulaResult($formula, $values)
-    {
-        if(empty($formula)) {
-            throw new \Exception("Formula cannot be empty");
-        }
-
-        $formula = self::getCalculationInstance()->_translateFormulaToEnglish($formula);
-
-        $fieldIds = self::getFieldIds($formula);
-
-        $formula = self::replaceFieldsValuesInFormula($formula, $fieldIds, $values);
-
-        if(!self::isFormulaValid($formula)) {
-            throw new \Exception("The formula is not good");
-        }
-
-        return self::getCalculationInstance()->_calculateFormulaValue($formula, null, null);
-    }
-
-    /**
-     * Check if all fields (in the formula) are if the array of values given
-     *
-     * @param $fieldIds
-     * @param $values
-     * @return bool
-     */
-    private static function valuesComplete($fieldIds, $values)
-    {
-        foreach($fieldIds as $fieldId) {
-            //check if the reference value is given
-            if(!array_key_exists($fieldId, $values)) {
-                return false;
-            }
-        }
-        return true;
-    }
-
-    /**
-     * Checks if all fields are in the array of values given
-     * If true, replace fieldIds by theirs values
-     *
-     * @param $formula
-     * @param $fieldIds
-     * @param $values
      * @return mixed
-     * @throws \Exception
+     * @throws \PHPExcel_Calculation_Exception
+     * @throws \PHPExcel_Exception
      */
-    public static function replaceFieldsValuesInFormula($formula, $fieldIds, $values)
+    public static function getFormulaResult($cellValues, $formula)
     {
-        if(!self::valuesComplete($fieldIds, $values)) {
-            throw new \Exception("All the references are not in array of values");
-        }
+        $objPHPExcel = new \PHPExcel();
+        $objPHPExcel->setActiveSheetIndex(0);
+        $sheet = $objPHPExcel->getActiveSheet();
 
-        foreach($fieldIds as $fieldId) {
-            $formula = str_replace("C".$fieldId, $values[$fieldId], $formula);
+        $tmpformula = static::fillCellValuesAndFixFormula($formula, $cellValues, $sheet);
+
+        $calculationClient = self::getInstance($objPHPExcel);
+
+        return $calculationClient->calculateFormula($tmpformula, 'Z999', $sheet->getCell('Z999'));
+    }
+
+    /**
+     * Set cellValues in each column of first line
+     * If a treatment needs to be done when a cell is filled, for example modify the formula
+     * or if the cellValues array is not uni-dimensional, you need to override this method
+     *
+     * @param $formula
+     * @param $cellValues
+     * @param $sheet
+     * @param int $startCellId
+     * @return mixed
+     */
+    public static function fillCellValuesAndFixFormula($formula, $cellValues, $sheet, $startCellId = 0)
+    {
+        $column = $startCellId;
+
+        foreach ($cellValues as $value) {
+            // For better performances, we always stay on the first row of the sheet.
+            $cell = $sheet->getCellByColumnAndRow($column, 1);
+            $cell->setValue($value);
+
+            $column++;
         }
 
         return $formula;
     }
-
-    /**
-     * Get the characters between start and end patterns in the string given
-     *
-     * @param $string
-     * @param $start
-     * @param $end
-     * @return string
-     */
-    private function get_string_between($string, $start, $end){
-        $string = " ".$string;
-        $ini = strpos($string,$start);
-
-        if ($ini == 0) return "";
-
-        $ini += strlen($start);
-        $len = strpos($string,$end,$ini) - $ini;
-
-        return substr($string,$ini,$len);
-    }
-
-    public static function getFormulaParts($formula)
-    {
-        return self::getCalculationInstance()->parseFormula($formula);
-    }
-
 } 
