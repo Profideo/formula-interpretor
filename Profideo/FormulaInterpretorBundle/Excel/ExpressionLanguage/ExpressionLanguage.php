@@ -64,13 +64,7 @@ class ExpressionLanguage extends BaseExpressionLanguage
     public function parse($expression, $names)
     {
         if (!$expression instanceof ParsedExpression) {
-            try {
-                $expression = parent::parse($this->prepare($expression), $this->getUppercaseNames($names));
-            } catch (SyntaxError $e) {
-                throw new ExpressionError(ExpressionTranslator::translate($e->getMessage()));
-            } catch (ExpressionError $e) {
-                throw new ExpressionError(ExpressionTranslator::translate($e->getMessage()));
-            }
+            $expression = parent::parse($this->prepare($expression), $this->getUppercaseNames($names));
         }
 
         return $expression;
@@ -136,7 +130,7 @@ class ExpressionLanguage extends BaseExpressionLanguage
 
             if (count($functions[1]) < $this->minimumNumberOfFunctions) {
                 throw new ExpressionError(
-                    sprintf('An expression must contains at least %d functions', $this->minimumNumberOfFunctions)
+                    sprintf('An expression must contains at least %d function(s)', $this->minimumNumberOfFunctions)
                 );
             }
         }

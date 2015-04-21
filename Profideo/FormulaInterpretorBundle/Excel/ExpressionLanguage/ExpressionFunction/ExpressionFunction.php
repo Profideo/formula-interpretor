@@ -80,14 +80,14 @@ abstract class ExpressionFunction extends BaseExpressionFunction
     private function validateArguments($numArguments, $minArguments, $maxArguments)
     {
         if ($numArguments < $minArguments || (-1 !== $maxArguments && $numArguments > $maxArguments)) {
-            $errorMessage = sprintf('Nombre d\'arguments incorrects pour la fonction "%s"() : %d donné(s)', $this->getName(), $numArguments);
+            $errorMessage = sprintf('Wrong number of arguments for %s() function: %d given', $this->getName(), $numArguments);
 
             if ($minArguments === $maxArguments) {
-                $errorMessage .= sprintf(', %d attendu(s)', $maxArguments);
+                $errorMessage .= sprintf(', %d expected', $maxArguments);
             } elseif (-1 !== $maxArguments) {
-                $errorMessage .= sprintf(', entre %d et %d attendu(s)', $minArguments, $maxArguments);
+                $errorMessage .= sprintf(', between %d and %d expected', $minArguments, $maxArguments);
             } else {
-                $errorMessage .= sprintf(', au moins %d attendu(s)', $minArguments);
+                $errorMessage .= sprintf(', at least %d expected', $minArguments);
             }
 
             throw new ExpressionError($errorMessage);

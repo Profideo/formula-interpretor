@@ -31,7 +31,9 @@ class AndExpressionFunction extends ExpressionFunction
                     } elseif ('FALSE' === $tmpArgument) {
                         $value = false;
                     } else {
-                        throw new ExpressionError(sprintf('La fonction "%s" attend des valeurs du type booléen. Mais "%s" est du type texte et ne peut pas être forcé pour être booléen', $this->getName(), $argument));
+                        throw new ExpressionError(
+                            sprintf('The function "%s" expects boolean values. But "%s" is text type and can not be forced to be boolean', $this->getName(), $argument)
+                        );
                     }
                 }
 
