@@ -15,6 +15,10 @@ class ConcatenateExpressionFunction extends ExpressionFunction
 
         foreach (func_get_args() as $key => $argument) {
             if (0 !== $key) {
+                if (is_bool($argument)) {
+                    $argument = strtoupper(var_export($argument, true));
+                }
+
                 $values[] = $argument;
             }
         }

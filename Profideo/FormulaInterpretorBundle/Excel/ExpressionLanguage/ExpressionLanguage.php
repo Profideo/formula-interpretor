@@ -7,7 +7,6 @@ use Symfony\Component\ExpressionLanguage\ExpressionFunctionProviderInterface;
 use Symfony\Component\ExpressionLanguage\ExpressionLanguage as BaseExpressionLanguage;
 use Symfony\Component\ExpressionLanguage\ParsedExpression;
 use Symfony\Component\ExpressionLanguage\ParserCache\ParserCacheInterface;
-use Symfony\Component\ExpressionLanguage\SyntaxError;
 
 class ExpressionLanguage extends BaseExpressionLanguage
 {
@@ -44,7 +43,7 @@ class ExpressionLanguage extends BaseExpressionLanguage
         array $providers = array(),
         array $constants = array(),
         $startWithEqual = false,
-        $minimumNumberOfFunctions = 1
+        $minimumNumberOfFunctions = 0
     ) {
         $this->constants = array_change_key_case($constants, CASE_UPPER);
         $this->startWithEqual = $startWithEqual;
