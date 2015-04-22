@@ -136,12 +136,12 @@ class ExpressionLanguage extends BaseExpressionLanguage
 
         // Replace all singles equal signs by triples equal signs
         $expression = preg_replace_callback(static::CALCULATION_REGEXP_SINGLE_EQUAL_SIGN, function ($match) {
-            return str_replace('=', '==', $match[0]);
+            return str_replace('=', '===', $match[0]);
         }, $expression);
 
         // Replace all <> by !==
         $expression = preg_replace_callback(static::CALCULATION_REGEXP_NOT_EQUAL_SIGN, function () {
-            return '!=';
+            return '!==';
         }, $expression);
 
         return $expression;

@@ -49,10 +49,10 @@ class FormulaInterpretor
     {
         if ($nodeChildren instanceof BinaryNode) {
             $this->validateBinaryNode($nodeChildren, $constantTypes);
-        } elseif(is_array($this->getChildren($nodeChildren))) {
+        } elseif (is_array($this->getChildren($nodeChildren))) {
             $this->validateTypes($this->getChildren($nodeChildren), $constantTypes);
-        } elseif(is_array($nodeChildren)) {
-            foreach($nodeChildren as $nodeChild) {
+        } elseif (is_array($nodeChildren)) {
+            foreach ($nodeChildren as $nodeChild) {
                 $this->validateTypes($nodeChild, $constantTypes);
             }
         }
@@ -69,10 +69,20 @@ class FormulaInterpretor
             $operandLeft = $arguments['left'];
             $operandRight = $arguments['right'];
 
-            $valueLeft = $arguments['left'] instanceof ConstantNode ? $arguments['left']->attributes['value'] : $arguments['left']->attributes['name'];
-            $valueRight = $arguments['right'] instanceof ConstantNode ? $arguments['right']->attributes['value'] : $arguments['right']->attributes['name'];
+            if ($arguments['left'] instanceof ConstantNode) {
+                $arguments['left']->attributes['value'] = $this->fixType($arguments['left']->attributes['value']);
+                $valueLeft = $arguments['left']->attributes['value'];
+            } else {
+                $valueLeft = $arguments['left']->attributes['name'];
+            }
 
-            //comparaison de types et fix
+            if ($arguments['right'] instanceof ConstantNode) {
+                $arguments['right']->attributes['value'] = $this->fixType($arguments['right']->attributes['value']);
+                $valueRight = $arguments['right']->attributes['value'];
+            } else {
+                $valueRight = $arguments['right']->attributes['name'];
+            }
+
             if (!$this->compatibleTypes($operandLeft, $operandRight, $constantTypes)) {
                 throw new ExpressionError(sprintf('Compared values %s and %s are not the same type', $valueLeft, $valueRight));
             }
@@ -118,8 +128,7 @@ class FormulaInterpretor
 
         if ($node instanceof ParsedExpression) {
             return $node->getNodes();
-        }
-        elseif ($node instanceof Node) {
+        } elseif ($node instanceof Node) {
             return $node->nodes;
         } elseif ($node instanceof FunctionNode) {
             return $node->nodes['arguments'];
@@ -128,5 +137,14 @@ class FormulaInterpretor
         }
 
         return false;
+    }
+
+    private function fixType($value)
+    {
+        if (!($value instanceof NameNode) && is_numeric($value)) {
+            return floatval($value);
+        }
+
+        return $value;
     }
 }
