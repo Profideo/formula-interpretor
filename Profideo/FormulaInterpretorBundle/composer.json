@@ -11,7 +11,8 @@
         }
     ],
     "require": {
-        "sowbiba/phpexcel": "@stable"
+        "php": ">=5.3.2",
+        "symfony/framework-bundle": "2.4.*"
     },
     "autoload": {
         "psr-0": {
