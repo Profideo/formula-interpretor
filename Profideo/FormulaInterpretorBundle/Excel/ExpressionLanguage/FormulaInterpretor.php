@@ -22,7 +22,7 @@ class FormulaInterpretor
     {
         $parsedExpression = $this->expressionLanguage->parse($expression, $names);
 
-        $this->validateTypes($parsedExpression, $constantTypes);
+        $this->validateTypes($this->getChildren($parsedExpression), $constantTypes);
 
         return $parsedExpression;
     }
@@ -45,35 +45,36 @@ class FormulaInterpretor
         return $this->expressionLanguage->evaluate($expression, $values);
     }
 
-    private function validateTypes($parsedExpression, $constantTypes = array())
+    private function validateTypes($nodeChildren, $constantTypes = array())
     {
-        foreach ($parsedExpression->getNodes()->nodes as $parsedNode) {
-            $children = $this->getChildren($parsedNode);
+        if ($nodeChildren instanceof BinaryNode) {
+            $this->validateBinaryNode($nodeChildren, $constantTypes);
+        } elseif(is_array($this->getChildren($nodeChildren))) {
+            $this->validateTypes($this->getChildren($nodeChildren), $constantTypes);
+        } elseif(is_array($nodeChildren)) {
+            foreach($nodeChildren as $nodeChild) {
+                $this->validateTypes($nodeChild, $constantTypes);
+            }
+        }
+    }
 
-            while ($children) {
-                foreach ($children as $child) {
-                    if ($child instanceof BinaryNode) {
-                        $arguments = $this->getChildren($child);
+    private function validateBinaryNode($node, $constantTypes)
+    {
+        $arguments = $this->getChildren($node);
 
-                        if (
-                            ($arguments['left'] instanceof ConstantNode || $arguments['left'] instanceof NameNode) &&
-                            ($arguments['right'] instanceof ConstantNode || $arguments['right'] instanceof NameNode)
-                        ) {
-                            $operandLeft = $arguments['left'];
-                            $operandRight = $arguments['right'];
+        if (
+            ($arguments['left'] instanceof ConstantNode || $arguments['left'] instanceof NameNode) &&
+            ($arguments['right'] instanceof ConstantNode || $arguments['right'] instanceof NameNode)
+        ) {
+            $operandLeft = $arguments['left'];
+            $operandRight = $arguments['right'];
 
-                            $valueLeft = $arguments['left'] instanceof ConstantNode ? $arguments['left']->attributes['value'] : $arguments['left']->attributes['name'];
-                            $valueRight = $arguments['right'] instanceof ConstantNode ? $arguments['right']->attributes['value'] : $arguments['right']->attributes['name'];
+            $valueLeft = $arguments['left'] instanceof ConstantNode ? $arguments['left']->attributes['value'] : $arguments['left']->attributes['name'];
+            $valueRight = $arguments['right'] instanceof ConstantNode ? $arguments['right']->attributes['value'] : $arguments['right']->attributes['name'];
 
-                            //comparaison de types et fix
-                            if (!$this->compatibleTypes($operandLeft, $operandRight, $constantTypes)) {
-                                throw new ExpressionError(sprintf('Compared values %s and %s are not the same type.', $valueLeft, $valueRight));
-                            }
-                        }
-                    }
-
-                    $children = $this->getChildren($child);
-                }
+            //comparaison de types et fix
+            if (!$this->compatibleTypes($operandLeft, $operandRight, $constantTypes)) {
+                throw new ExpressionError(sprintf('Compared values %s and %s are not the same type.', $valueLeft, $valueRight));
             }
         }
     }
@@ -111,11 +112,14 @@ class FormulaInterpretor
 
     private function getChildren($node)
     {
-        if (!is_object($node) || empty($node->nodes)) {
+        if (!is_object($node)) {
             return false;
         }
 
-        if ($node instanceof Node) {
+        if ($node instanceof ParsedExpression) {
+            return $node->getNodes();
+        }
+        elseif ($node instanceof Node) {
             return $node->nodes;
         } elseif ($node instanceof FunctionNode) {
             return $node->nodes['arguments'];
