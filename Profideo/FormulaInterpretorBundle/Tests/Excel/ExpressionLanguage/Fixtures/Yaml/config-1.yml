@@ -1,27 +1,4 @@
 formula_interpretor:
     excel:
-#        constants:
-#            inf:
-#                value: 999999999999
-#                translations: [inf]
-#        functions:
-#            cna:
-#                class: Pfd\ApiBundle\Libraries\FormulaInterpretor\Excel\ExpressionLanguage\ExpressionFunction\CnaExpressionFunction
-#                arguments:
-#                    min: 1
-#                    max: 2
-#                translations: [cna]
-#            cnc:
-#                class: Pfd\ApiBundle\Libraries\FormulaInterpretor\Excel\ExpressionLanguage\ExpressionFunction\CncExpressionFunction
-#                arguments:
-#                    min: 1
-#                    max: 2
-#                translations: [cnc]
-#            cnanc:
-#                class: Pfd\ApiBundle\Libraries\FormulaInterpretor\Excel\ExpressionLanguage\ExpressionFunction\CnancExpressionFunction
-#                arguments:
-#                    min: 1
-#                    max: 2
-#                translations: [cnanc]
         start_with_equal: true
         minimum_number_of_functions: 1

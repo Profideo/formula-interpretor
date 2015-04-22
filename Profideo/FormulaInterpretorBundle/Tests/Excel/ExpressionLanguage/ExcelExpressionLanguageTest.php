@@ -70,8 +70,6 @@ class ExcelExpressionLanguageTest extends AbstractFormulaInterpretorExtensionTes
         $formulaInterpretor->evaluate('=15>20');
     }
 
-    // todo: new constants / bad constants / variables...
-
     public function defaultConstantsDataProvider()
     {
         return array(
@@ -264,14 +262,19 @@ class ExcelExpressionLanguageTest extends AbstractFormulaInterpretorExtensionTes
             array(
                 'expression' => '=sI()',
                 'result' => null,
-                'exception' => 'Wrong number of arguments for SI() function: 0 given, between 1 and 3 expected.',
+                'exception' => 'Wrong number of arguments for SI() function: 0 given, between 2 and 3 expected.',
             ),
             array(
                 'expression' => '=iF(TRUE)',
-                'result' => 0,
+                'result' => null,
+                'exception' => 'Wrong number of arguments for IF() function: 1 given, between 2 and 3 expected.',
             ),
             array(
-                'expression' => '=IF(FAUX)',
+                'expression' => '=iF(TRUE;TRUE)',
+                'result' => true,
+            ),
+            array(
+                'expression' => '=IF(FAUX;TRUE)',
                 'result' => false,
             ),
             array(
@@ -635,5 +638,72 @@ class ExcelExpressionLanguageTest extends AbstractFormulaInterpretorExtensionTes
         $formulaInterpretor = $this->container->get('profideo.formula_interpretor.excel.formula_interpretor');
 
         $this->assertSame('HELLO WORLD !', $formulaInterpretor->evaluate('CONCATENATE(HELLO;" ";WORLD())'));
+    }
+
+    public function typeValidationDataProvider()
+    {
+        return array(
+            array(
+                'expression' => '2>1',
+                'result' => true,
+            ),
+            array(
+                'expression' => 'C1>1',
+                'result' => null,
+                'exception' => 'Compared values C1 and 1 are not the same type.',
+                'values' => array('C1' => 'a'),
+                'types' => array('C1' => 'string'),
+            ),
+            array(
+                'expression' => 'C1>1',
+                'result' => true,
+                'values' => array('C1' => 5.55),
+                'types' => array('C1' => 'double'),
+            ),
+            array(
+                'expression' => 'C1=50',
+                'result' => true,
+                'values' => array('C1' => 50.000),
+                'types' => array('C1' => 'double'),
+            ),
+            array(
+                'expression' => 'C1<>50',
+                'result' => false,
+                'values' => array('C1' => 50.000),
+                'types' => array('C1' => 'double'),
+            ),
+        );
+    }
+
+    /**
+     * @dataProvider typeValidationDataProvider
+     *
+     * @param $expression
+     * @param $expectedResult
+     * @param null $exception
+     * @param array $values
+     * @param array $types
+     */
+    public function testTypeValidation($expression, $expectedResult, $exception = null, $values = array(), $types = array())
+    {
+        $this->loadConfiguration($this->container, 'config-0');
+        $this->container->compile();
+
+        $formulaInterpretor = $this->container->get('profideo.formula_interpretor.excel.formula_interpretor');
+
+        if (null !== $exception) {
+            $this->setExpectedException(
+                '\Profideo\FormulaInterpretorBundle\Excel\ExpressionLanguage\ExpressionError',
+                $exception
+            );
+        }
+
+        $parsedFormula = $formulaInterpretor->parse($expression, array_keys($values), $types);
+
+        $result = $formulaInterpretor->evaluate($parsedFormula, $values);
+
+        if (!$exception) {
+            $this->assertSame($result, $expectedResult);
+        }
     }
 }

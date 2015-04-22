@@ -74,7 +74,7 @@ class FormulaInterpretor
 
             //comparaison de types et fix
             if (!$this->compatibleTypes($operandLeft, $operandRight, $constantTypes)) {
-                throw new ExpressionError(sprintf('Compared values %s and %s are not the same type.', $valueLeft, $valueRight));
+                throw new ExpressionError(sprintf('Compared values %s and %s are not the same type', $valueLeft, $valueRight));
             }
         }
     }

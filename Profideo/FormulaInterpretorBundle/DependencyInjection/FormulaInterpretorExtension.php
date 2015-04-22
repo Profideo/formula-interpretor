@@ -109,7 +109,7 @@ class FormulaInterpretorExtension extends Extension
             'if' => array(
                 'class' => 'Profideo\FormulaInterpretorBundle\Excel\ExpressionLanguage\ExpressionFunction\IfExpressionFunction',
                 'arguments' => array(
-                    'min' => 1,
+                    'min' => 2,
                     'max' => 3,
                 ),
                 'translations' => array('IF', 'SI'),
