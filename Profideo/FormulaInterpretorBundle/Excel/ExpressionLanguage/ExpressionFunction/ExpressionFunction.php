@@ -5,6 +5,23 @@ namespace Profideo\FormulaInterpretorBundle\Excel\ExpressionLanguage\ExpressionF
 use Profideo\FormulaInterpretorBundle\Excel\ExpressionLanguage\ExpressionError;
 use Symfony\Component\ExpressionLanguage\ExpressionFunction as BaseExpressionFunction;
 
+/**
+ * @see Symfony\Component\ExpressionLanguage\ExpressionFunction
+ *
+ * Represents a function that can be used in an expression.
+ *
+ * A function is defined by two PHP callables. The callables are used
+ * by the language to compile and/or evaluate the function.
+ *
+ * The "compiler" function is used at compilation time and must return a
+ * PHP representation of the function call (it receives the function
+ * arguments as arguments).
+ *
+ * The "evaluator" function is used for expression evaluation and must return
+ * the value of the function call based on the values defined for the
+ * expression (it receives the values as a first argument and the function
+ * arguments as remaining arguments).
+ */
 abstract class ExpressionFunction extends BaseExpressionFunction
 {
     /**

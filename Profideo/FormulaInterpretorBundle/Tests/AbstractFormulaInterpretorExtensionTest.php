@@ -8,8 +8,15 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 abstract class AbstractFormulaInterpretorExtensionTest extends KernelTestCase
 {
-    private $extension;
-    private $container;
+    /**
+     * @var FormulaInterpretorExtension
+     */
+    protected $extension;
+
+    /**
+     * @var ContainerBuilder
+     */
+    protected $container;
 
     protected function setUp()
     {

@@ -28,10 +28,17 @@ class FormulaInterpretorExtension extends Extension
         }
     }
 
+    /**
+     * Builds excel node definition.
+     *
+     * @param ContainerBuilder $container
+     * @param $config
+     */
     private function buildFormulaInterpretorExcelDefinition(ContainerBuilder $container, $config)
     {
         $functions = array_merge($this->getDefaultExcelFunctions(), $config['functions']);
 
+        // Defines ExpressionFunction services.
         $functionDefinitions = array();
         foreach ($functions as $name => $function) {
             $functionClassParameter = sprintf('%s.%s.class', $this->excelFunctionBaseName, strtolower($name));
@@ -58,6 +65,7 @@ class FormulaInterpretorExtension extends Extension
             }
         }
 
+        // Defines ExpressionLanguageProvider service using a list of ExpressionFunction.
         $expressionLanguageProvider = new Definition();
         $expressionLanguageProvider->setClass($container->getParameter('profideo.formula_interpretor.excel.expression_language_provider.class'));
         $expressionLanguageProvider->setArguments([$functionDefinitions]);
@@ -74,6 +82,11 @@ class FormulaInterpretorExtension extends Extension
             }
         }
 
+        // Defines ExpressionLanguage service using:
+        // - ExpressionLanguageProvider service
+        // - a constant list
+        // - start with equal configuration
+        // - minimum number of functions configuration
         $expressionLanguage = new Definition();
         $expressionLanguage->setClass($container->getParameter('profideo.formula_interpretor.excel.expression_language.class'));
         $expressionLanguage->setArguments(array(
@@ -87,6 +100,11 @@ class FormulaInterpretorExtension extends Extension
         $container->setDefinition('profideo.formula_interpretor.excel.expression_language', $expressionLanguage);
     }
 
+    /**
+     * Returns a list of default functions.
+     *
+     * @return array
+     */
     private function getDefaultExcelFunctions()
     {
         return array(
@@ -157,6 +175,11 @@ class FormulaInterpretorExtension extends Extension
         );
     }
 
+    /**
+     * Returns a list of default constants.
+     *
+     * @return array
+     */
     private function getDefaultExcelConstants()
     {
         return array(

@@ -13,11 +13,21 @@ class FormulaInterpretor
 {
     private $expressionLanguage;
 
+    /**
+     * @param ExpressionLanguage $expressionLanguage
+     */
     public function __construct(ExpressionLanguage $expressionLanguage)
     {
         $this->expressionLanguage = $expressionLanguage;
     }
 
+    /**
+     * @param $expression
+     * @param array $names
+     * @param array $constantTypes
+     *
+     * @return ParsedExpression
+     */
     public function parse($expression, array $names = array(), $constantTypes = array())
     {
         $parsedExpression = $this->expressionLanguage->parse($expression, $names);
@@ -27,6 +37,12 @@ class FormulaInterpretor
         return $parsedExpression;
     }
 
+    /**
+     * @param $expression
+     * @param array $values
+     *
+     * @return string
+     */
     public function compile($expression, array $values = array())
     {
         if (!$expression instanceof ParsedExpression) {
@@ -36,6 +52,12 @@ class FormulaInterpretor
         return $this->expressionLanguage->compile($expression, array_keys($values));
     }
 
+    /**
+     * @param $expression
+     * @param array $values
+     *
+     * @return string
+     */
     public function evaluate($expression, array $values = array())
     {
         if (!$expression instanceof ParsedExpression) {
@@ -45,6 +67,10 @@ class FormulaInterpretor
         return $this->expressionLanguage->evaluate($expression, $values);
     }
 
+    /**
+     * @param $nodeChildren
+     * @param array $constantTypes
+     */
     private function validateTypes($nodeChildren, $constantTypes = array())
     {
         if ($nodeChildren instanceof BinaryNode) {
@@ -58,6 +84,10 @@ class FormulaInterpretor
         }
     }
 
+    /**
+     * @param $node
+     * @param $constantTypes
+     */
     private function validateBinaryNode($node, $constantTypes)
     {
         $arguments = $this->getChildren($node);
@@ -89,6 +119,13 @@ class FormulaInterpretor
         }
     }
 
+    /**
+     * @param $operand1
+     * @param $operand2
+     * @param array $constantTypes
+     *
+     * @return bool
+     */
     private function compatibleTypes($operand1, $operand2, $constantTypes = array())
     {
         $type1 = 'unknown';
@@ -120,6 +157,11 @@ class FormulaInterpretor
         return true;
     }
 
+    /**
+     * @param $node
+     *
+     * @return array|bool|Node
+     */
     private function getChildren($node)
     {
         if (!is_object($node)) {
@@ -139,6 +181,11 @@ class FormulaInterpretor
         return false;
     }
 
+    /**
+     * @param $value
+     *
+     * @return mixed
+     */
     private function fixType($value)
     {
         if (!($value instanceof NameNode) && is_numeric($value)) {

@@ -2,13 +2,22 @@
 
 namespace Profideo\FormulaInterpretorBundle\Excel\ExpressionLanguage\ExpressionFunction;
 
+/**
+ * Represents the "MIN" function that can be used in an expression.
+ */
 class MinExpressionFunction extends ExpressionFunction
 {
+    /**
+     * @return string
+     */
     protected function getCompilerFunction()
     {
         return sprintf('%s(%s)', $this->getName(), implode(', ', func_get_args()));
     }
 
+    /**
+     * @return float|int|null
+     */
     protected function getEvaluatorFunction()
     {
         $minValue = null;

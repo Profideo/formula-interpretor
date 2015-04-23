@@ -4,13 +4,22 @@ namespace Profideo\FormulaInterpretorBundle\Excel\ExpressionLanguage\ExpressionF
 
 use Profideo\FormulaInterpretorBundle\Excel\ExpressionLanguage\ExpressionError;
 
+/**
+ * Represents the "OR" function that can be used in an expression.
+ */
 class OrExpressionFunction extends ExpressionFunction
 {
+    /**
+     * @return string
+     */
     protected function getCompilerFunction()
     {
         return sprintf('%s(%s)', $this->getName(), implode(', ', func_get_args()));
     }
 
+    /**
+     * @return bool
+     */
     protected function getEvaluatorFunction()
     {
         $returnValue = false;

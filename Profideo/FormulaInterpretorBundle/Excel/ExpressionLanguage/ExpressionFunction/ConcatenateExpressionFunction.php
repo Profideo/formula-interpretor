@@ -2,13 +2,22 @@
 
 namespace Profideo\FormulaInterpretorBundle\Excel\ExpressionLanguage\ExpressionFunction;
 
+/**
+ * Represents the "CONCATENATE" function that can be used in an expression.
+ */
 class ConcatenateExpressionFunction extends ExpressionFunction
 {
+    /**
+     * @return string
+     */
     protected function getCompilerFunction()
     {
         return sprintf('%s(%s)', $this->getName(), implode(', ', func_get_args()));
     }
 
+    /**
+     * @return string
+     */
     protected function getEvaluatorFunction()
     {
         $values = array();

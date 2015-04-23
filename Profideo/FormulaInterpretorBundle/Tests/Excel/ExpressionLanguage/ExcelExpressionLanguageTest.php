@@ -2,7 +2,6 @@
 
 namespace Profideo\FormulaInterpretorBundle\Tests\Excel\ExpressionLanguage;
 
-use Profideo\FormulaInterpretorBundle\DependencyInjection\FormulaInterpretorExtension;
 use Profideo\FormulaInterpretorBundle\Tests\AbstractFormulaInterpretorExtensionTest;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -10,21 +9,6 @@ use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 
 class ExcelExpressionLanguageTest extends AbstractFormulaInterpretorExtensionTest
 {
-    private $extension;
-
-    /**
-     * @var ContainerBuilder
-     */
-    private $container;
-
-    protected function setUp()
-    {
-        $this->extension = new FormulaInterpretorExtension();
-
-        $this->container = new ContainerBuilder();
-        $this->container->registerExtension($this->extension);
-    }
-
     protected function loadConfiguration(ContainerBuilder $container, $resource)
     {
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__.'/Fixtures/Yaml/'));
@@ -680,7 +664,7 @@ class ExcelExpressionLanguageTest extends AbstractFormulaInterpretorExtensionTes
      *
      * @param $expression
      * @param $expectedResult
-     * @param null $exception
+     * @param null  $exception
      * @param array $values
      * @param array $types
      */
