@@ -25,14 +25,15 @@ class FormulaInterpretor
      * @param $expression
      * @param array $names
      * @param array $constantTypes
+     * @param array $noTypeConstants
      *
      * @return ParsedExpression
      */
-    public function parse($expression, array $names = array(), $constantTypes = array())
+    public function parse($expression, array $names = array(), $constantTypes = array(), $noTypeConstants = array())
     {
         $parsedExpression = $this->expressionLanguage->parse($expression, $names);
 
-        $this->validateTypes($this->getChildren($parsedExpression), $constantTypes);
+        $this->validateTypes($this->getChildren($parsedExpression), $constantTypes, $noTypeConstants);
 
         return $parsedExpression;
     }
@@ -70,16 +71,17 @@ class FormulaInterpretor
     /**
      * @param $nodeChildren
      * @param array $constantTypes
+     * @param array $noTypeConstants
      */
-    private function validateTypes($nodeChildren, $constantTypes = array())
+    private function validateTypes($nodeChildren, $constantTypes = array(), $noTypeConstants = array())
     {
         if ($nodeChildren instanceof BinaryNode) {
-            $this->validateBinaryNode($nodeChildren, $constantTypes);
+            $this->validateBinaryNode($nodeChildren, $constantTypes, $noTypeConstants);
         } elseif (is_array($this->getChildren($nodeChildren))) {
-            $this->validateTypes($this->getChildren($nodeChildren), $constantTypes);
+            $this->validateTypes($this->getChildren($nodeChildren), $constantTypes, $noTypeConstants);
         } elseif (is_array($nodeChildren)) {
             foreach ($nodeChildren as $nodeChild) {
-                $this->validateTypes($nodeChild, $constantTypes);
+                $this->validateTypes($nodeChild, $constantTypes, $noTypeConstants);
             }
         }
     }
@@ -87,8 +89,9 @@ class FormulaInterpretor
     /**
      * @param $node
      * @param $constantTypes
+     * @param array $noTypeConstants
      */
-    private function validateBinaryNode($node, $constantTypes)
+    private function validateBinaryNode($node, $constantTypes, $noTypeConstants = array())
     {
         $arguments = $this->getChildren($node);
 
@@ -113,7 +116,7 @@ class FormulaInterpretor
                 $valueRight = $arguments['right']->attributes['name'];
             }
 
-            if (!$this->compatibleTypes($operandLeft, $operandRight, $constantTypes)) {
+            if (!$this->compatibleTypes($operandLeft, $operandRight, $constantTypes, $noTypeConstants)) {
                 throw new ExpressionError(sprintf('Compared values %s and %s are not the same type', $valueLeft, $valueRight));
             }
         }
@@ -123,10 +126,11 @@ class FormulaInterpretor
      * @param $operand1
      * @param $operand2
      * @param array $constantTypes
+     * @param array $noTypeConstants
      *
      * @return bool
      */
-    private function compatibleTypes($operand1, $operand2, $constantTypes = array())
+    private function compatibleTypes($operand1, $operand2, $constantTypes = array(), $noTypeConstants = array())
     {
         $type1 = 'unknown';
         $type2 = 'unknown';
@@ -150,7 +154,7 @@ class FormulaInterpretor
             $type2 = 'string';
         }
 
-        if ($type1 === 'unknown' || $type2 === 'unknown' || $type1 !== $type2) {
+        if (!in_array($value1, $noTypeConstants) && !in_array($value2, $noTypeConstants) && ($type1 === 'unknown' || $type2 === 'unknown' || $type1 !== $type2)) {
             return false;
         }
 
