@@ -5,19 +5,19 @@
     "type": "library",
     "license": "LGPL",
     "authors": [
-	{
-		"name": "Ibrahima SOW",
-		"email": "isow@profideo.com",
-		"company": "Profideo",
-		"role": "Developer"
-	}
+        {
+            "name": "Profideo",
+            "homepage": "http://profideo.com"
+        }
     ],
     "require": {
-        "profideo-ci/phpexcel": "1.0"
+        "php": ">=5.3.2",
+        "symfony/framework-bundle": "2.4.*"
     },
     "autoload": {
         "psr-0": {
-            "Profideo": ""
+            "Profideo\\FormulaInterpretorBundle": ""
         }
-    }
+    },
+    "target-dir": "Profideo/FormulaInterpretorBundle"
 }
