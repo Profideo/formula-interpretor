@@ -18,6 +18,5 @@
         "psr-0": {
             "Profideo\\FormulaInterpretorBundle": ""
         }
-    },
-    "target-dir": "Profideo/FormulaInterpretorBundle"
+    }
 }
