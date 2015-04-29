@@ -5,6 +5,7 @@ namespace Profideo\FormulaInterpretorBundle\DependencyInjection;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\Definition;
+use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 use Symfony\Component\DependencyInjection\Loader;
 
@@ -57,6 +58,7 @@ class FormulaInterpretorExtension extends Extension
                     $function['arguments']['max'],
                 ));
                 $functionDefinition->setPublic(false);
+                $functionDefinition->addMethodCall('setContainer', [new Reference('service_container')]);
 
                 $functionService = sprintf('%s.%s', $this->excelFunctionBaseName, $translation);
                 $container->setDefinition($functionService, $functionDefinition);
