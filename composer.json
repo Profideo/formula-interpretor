@@ -4,6 +4,7 @@
     "keywords": ["Formula","Interpreter","Profideo"],
     "type": "library",
     "license": "LGPL",
+    "minimum-stability": "dev",
     "authors": [
         {
             "name": "Profideo",
