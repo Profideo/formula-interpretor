@@ -26,6 +26,45 @@ class ExcelExpressionLanguageTest extends AbstractFormulaInterpretorExtensionTes
         $this->assertFalse($formulaInterpretor->evaluate('15>20'));
     }
 
+    public function testTypes()
+    {
+        $this->container->loadFromExtension($this->extension->getAlias());
+        $this->container->compile();
+
+        $formulaInterpretor = $this->container->get('profideo.formula_interpretor.excel.formula_interpretor');
+
+        // Tests types such as string VS numeric / int VS float / ...
+        $this->assertFalse($formulaInterpretor->evaluate('"TEST">20'));
+        $this->assertFalse($formulaInterpretor->evaluate('"TEST">=20'));
+        $this->assertFalse($formulaInterpretor->evaluate('"TEST"<20'));
+        $this->assertFalse($formulaInterpretor->evaluate('"TEST"<=20'));
+        $this->assertFalse($formulaInterpretor->evaluate('"TEST"=0'));
+        $this->assertTrue($formulaInterpretor->evaluate('"TEST"<>0'));
+        $this->assertTrue($formulaInterpretor->evaluate('"TEST"<>1'));
+        $this->assertTrue($formulaInterpretor->evaluate('"TEST"<>"TEST2"'));
+        $this->assertTrue($formulaInterpretor->evaluate('"TEST"="TEST"'));
+        $this->assertFalse($formulaInterpretor->evaluate('"TEST"<>"TEST"'));
+        $this->assertFalse($formulaInterpretor->evaluate('"TEST">"TEST"'));
+        $this->assertFalse($formulaInterpretor->evaluate('"TEST">="TEST"'));
+        $this->assertFalse($formulaInterpretor->evaluate('"TEST"<"TEST"'));
+        $this->assertFalse($formulaInterpretor->evaluate('"TEST"<="TEST"'));
+
+        $this->assertFalse($formulaInterpretor->evaluate('1>1.5'));
+        $this->assertFalse($formulaInterpretor->evaluate('1>=1.5'));
+        $this->assertTrue($formulaInterpretor->evaluate('1<1.5'));
+        $this->assertTrue($formulaInterpretor->evaluate('1<=1.5'));
+        $this->assertFalse($formulaInterpretor->evaluate('1=1.5'));
+        $this->assertTrue($formulaInterpretor->evaluate('1<>1.5'));
+        $this->assertTrue($formulaInterpretor->evaluate('1=1.0'));
+        $this->assertFalse($formulaInterpretor->evaluate('1<>1.0'));
+        $this->assertTrue($formulaInterpretor->evaluate('1=1'));
+        $this->assertFalse($formulaInterpretor->evaluate('1=2'));
+        $this->assertFalse($formulaInterpretor->evaluate('1<>1'));
+        $this->assertTrue($formulaInterpretor->evaluate('1<>2'));
+        $this->assertTrue($formulaInterpretor->evaluate('1.5=1.5'));
+        $this->assertFalse($formulaInterpretor->evaluate('1.5<>1.5'));
+    }
+
     /**
      * @expectedException \Profideo\FormulaInterpretorBundle\Excel\ExpressionLanguage\ExpressionError
      * @expectedExceptionMessage An expression must start with an equal sign.
