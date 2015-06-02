@@ -107,16 +107,6 @@ class ExpressionLanguage extends BaseExpressionLanguage
     {
         $expression = trim($expression);
 
-        // strtoupper everything except text between quotes.
-        $expression = preg_replace_callback(static::CALCULATION_REGEXP_NOT_TEXT, function ($match) {
-            return strtoupper($match[0]);
-        }, $expression);
-
-        // Replaces semicolons ";" by commas "," except when it's between quotes.
-        $expression = preg_replace_callback(static::CALCULATION_REGEXP_SEMICOLON_NOT_IN_TEXT, function () {
-            return ',';
-        }, $expression);
-
         if ($this->startWithEqual && '=' !== substr($expression, 0, 1)) {
             throw new ExpressionError('An expression must start with an equal sign');
         }
@@ -133,6 +123,16 @@ class ExpressionLanguage extends BaseExpressionLanguage
                 );
             }
         }
+
+        // strtoupper everything except text between quotes.
+        $expression = preg_replace_callback(static::CALCULATION_REGEXP_NOT_TEXT, function ($match) {
+            return strtoupper($match[0]);
+        }, $expression);
+
+        // Replaces semicolons ";" by commas "," except when it's between quotes.
+        $expression = preg_replace_callback(static::CALCULATION_REGEXP_SEMICOLON_NOT_IN_TEXT, function () {
+            return ',';
+        }, $expression);
 
         // Replace all singles equal signs by doubles equal signs except when it's between quotes.
         $expression = preg_replace_callback(static::CALCULATION_REGEXP_SINGLE_EQUAL_SIGN_NOT_IN_TEXT, function ($match) {
