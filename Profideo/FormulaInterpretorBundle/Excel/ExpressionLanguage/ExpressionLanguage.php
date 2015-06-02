@@ -13,8 +13,8 @@ class ExpressionLanguage extends BaseExpressionLanguage
     const CALCULATION_REGEXP_FUNCTION = '@?([A-Z][A-Z0-9\.]*)[\s]*\(';
     const CALCULATION_REGEXP_NOT_TEXT = '/[\w.-]+(?![^"]*"(?:(?:[^"]*"){2})*[^"]*$)/';
     const CALCULATION_REGEXP_SEMICOLON_NOT_IN_TEXT = '/(;)(?=(?:[^"]|"[^"]*")*$)/';
-    const CALCULATION_REGEXP_SINGLE_EQUAL_SIGN = '/[^=<>]=(?!=)/';
-    const CALCULATION_REGEXP_NOT_EQUAL_SIGN = '/(?<!=)<>(?!=)/';
+    const CALCULATION_REGEXP_SINGLE_EQUAL_SIGN_NOT_IN_TEXT = '/[^=<>!]=(?!=)(?=(?:[^"]|"[^"]*")*$)/';
+    const CALCULATION_REGEXP_NOT_EQUAL_SIGN_NOT_IN_TEXT = '/(?<!=)<>(?!=)(?=(?:[^"]|"[^"]*")*$)/';
 
     /**
      * @var array
@@ -134,17 +134,25 @@ class ExpressionLanguage extends BaseExpressionLanguage
             }
         }
 
-        // Replace all singles equal signs by doubles equal signs
-        $expression = preg_replace_callback(static::CALCULATION_REGEXP_SINGLE_EQUAL_SIGN, function ($match) {
+        // Replace all singles equal signs by doubles equal signs except when it's between quotes.
+        $expression = preg_replace_callback(static::CALCULATION_REGEXP_SINGLE_EQUAL_SIGN_NOT_IN_TEXT, function ($match) {
             return str_replace('=', '==', $match[0]);
         }, $expression);
 
-        // Replace all <> by !=
-        $expression = preg_replace_callback(static::CALCULATION_REGEXP_NOT_EQUAL_SIGN, function () {
+        // Replace all <> by != except when it's between quotes.
+        $expression = preg_replace_callback(static::CALCULATION_REGEXP_NOT_EQUAL_SIGN_NOT_IN_TEXT, function () {
             return '!=';
         }, $expression);
 
         return $expression;
+    }
+
+    /**
+     * @return array
+     */
+    public function getFunctions()
+    {
+        return array_keys($this->functions);
     }
 
     /**

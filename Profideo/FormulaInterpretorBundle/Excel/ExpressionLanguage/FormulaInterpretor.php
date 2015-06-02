@@ -58,4 +58,12 @@ class FormulaInterpretor
 
         return $this->expressionLanguage->evaluate($expression, $values);
     }
+
+    /**
+     * @return array
+     */
+    public function getFunctions()
+    {
+        return $this->expressionLanguage->getFunctions();
+    }
 }

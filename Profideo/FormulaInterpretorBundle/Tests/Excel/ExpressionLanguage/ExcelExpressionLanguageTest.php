@@ -15,6 +15,21 @@ class ExcelExpressionLanguageTest extends AbstractFormulaInterpretorExtensionTes
         $loader->load($resource.'.yml');
     }
 
+    public function testReplaces()
+    {
+        $this->loadConfiguration($this->container, 'config-1');
+        $this->container->compile();
+
+        $formulaInterpretor = $this->container->get('profideo.formula_interpretor.excel.formula_interpretor');
+
+        $this->assertSame('IF(TRUE,"TE;ST")', $formulaInterpretor->parse('=IF(TRUE;"TE;ST")')->__toString());
+        $this->assertSame('IF(1==2,"TE=ST")', $formulaInterpretor->parse('=IF(1=2;"TE=ST")')->__toString());
+        $this->assertSame('IF(1!=2,"TE<>ST")', $formulaInterpretor->parse('=IF(1<>2;"TE<>ST")')->__toString());
+        $this->assertSame('IF(1!=2,"TE!=ST")', $formulaInterpretor->parse('=IF(1!=2;"TE!=ST")')->__toString());
+        $this->assertSame('IF(1>=2,"TE>=ST")', $formulaInterpretor->parse('=IF(1>=2;"TE>=ST")')->__toString());
+        $this->assertSame('IF(1<=2,"TE<=ST")', $formulaInterpretor->parse('=IF(1<=2;"TE<=ST")')->__toString());
+    }
+
     public function testDefaultConfiguration()
     {
         $this->container->loadFromExtension($this->extension->getAlias());
@@ -661,5 +676,42 @@ class ExcelExpressionLanguageTest extends AbstractFormulaInterpretorExtensionTes
         $formulaInterpretor = $this->container->get('profideo.formula_interpretor.excel.formula_interpretor');
 
         $this->assertSame('HELLO WORLD !', $formulaInterpretor->evaluate('CONCATENATE(HELLO;" ";WORLD())'));
+    }
+
+    public function getFunctions()
+    {
+        return array(
+            array(
+                'config' => 'config-0',
+                'functions' => array('constant', 'AND', 'ET', 'CONCATENATE', 'CONCATENER', 'IF', 'SI', 'MAX', 'MIN', 'OR', 'OU', 'POW', 'PUISSANCE', 'ROUND', 'ARRONDI'),
+            ),
+            array(
+                'config' => 'config-1',
+                'functions' => array('constant', 'AND', 'ET', 'CONCATENATE', 'CONCATENER', 'IF', 'SI', 'MAX', 'MIN', 'OR', 'OU', 'POW', 'PUISSANCE', 'ROUND', 'ARRONDI'),
+            ),
+            array(
+                'config' => 'config-2',
+                'functions' => array('constant', 'AND', 'ET', 'CONCATENATE', 'CONCATENER', 'IF', 'SI', 'MAX', 'MIN', 'OR', 'OU', 'POW', 'PUISSANCE', 'ROUND', 'ARRONDI', 'WORLD'),
+            ),
+        );
+    }
+
+    /**
+     * @dataProvider getFunctions
+     *
+     * @param string $config
+     * @param array  $functions
+     */
+    public function testGetFunctions($config, $functions)
+    {
+        $this->loadConfiguration($this->container, $config);
+        $this->container->compile();
+
+        $formulaInterpretor = $this->container->get('profideo.formula_interpretor.excel.formula_interpretor');
+
+        $this->assertSame(
+            $functions,
+            $formulaInterpretor->getFunctions()
+        );
     }
 }
