@@ -15,19 +15,50 @@ class ExcelExpressionLanguageTest extends AbstractFormulaInterpretorExtensionTes
         $loader->load($resource.'.yml');
     }
 
-    public function testReplaces()
+    public function replacesDataProvider()
+    {
+        return array(
+            array(
+                'expression' => '=IF(TRUE;"TE;ST")',
+                'result' => 'IF(TRUE,"TE;ST")',
+            ),
+            array(
+                'expression' => '=IF(1=2;"TE=ST")',
+                'result' => 'IF(1==2,"TE=ST")',
+            ),
+            array(
+                'expression' => '=IF(1<>2;"TE<>ST")',
+                'result' => 'IF(1!=2,"TE<>ST")',
+            ),
+            array(
+                'expression' => '=IF(1!=2;"TE!=ST")',
+                'result' => 'IF(1!=2,"TE!=ST")',
+            ),
+            array(
+                'expression' => '=IF(1>=2;"TE>=ST")',
+                'result' => 'IF(1>=2,"TE>=ST")',
+            ),
+            array(
+                'expression' => '=IF(1<=2;"TE<=ST")',
+                'result' => 'IF(1<=2,"TE<=ST")',
+            ),
+        );
+    }
+
+    /**
+     * @dataProvider replacesDataProvider
+     *
+     * @param $expression
+     * @param $result
+     */
+    public function testReplaces($expression, $result)
     {
         $this->loadConfiguration($this->container, 'config-1');
         $this->container->compile();
 
         $formulaInterpretor = $this->container->get('profideo.formula_interpretor.excel.formula_interpretor');
 
-        $this->assertSame('IF(TRUE,"TE;ST")', $formulaInterpretor->parse('=IF(TRUE;"TE;ST")')->__toString());
-        $this->assertSame('IF(1==2,"TE=ST")', $formulaInterpretor->parse('=IF(1=2;"TE=ST")')->__toString());
-        $this->assertSame('IF(1!=2,"TE<>ST")', $formulaInterpretor->parse('=IF(1<>2;"TE<>ST")')->__toString());
-        $this->assertSame('IF(1!=2,"TE!=ST")', $formulaInterpretor->parse('=IF(1!=2;"TE!=ST")')->__toString());
-        $this->assertSame('IF(1>=2,"TE>=ST")', $formulaInterpretor->parse('=IF(1>=2;"TE>=ST")')->__toString());
-        $this->assertSame('IF(1<=2,"TE<=ST")', $formulaInterpretor->parse('=IF(1<=2;"TE<=ST")')->__toString());
+        $this->assertSame($result, $formulaInterpretor->parse($expression)->__toString());
     }
 
     public function testDefaultConfiguration()
@@ -41,7 +72,131 @@ class ExcelExpressionLanguageTest extends AbstractFormulaInterpretorExtensionTes
         $this->assertFalse($formulaInterpretor->evaluate('15>20'));
     }
 
-    public function testTypes()
+    public function typesDataProvider()
+    {
+        return array(
+            array(
+                'expression' => '"TEST">20',
+                'result' => false,
+            ),
+            array(
+                'expression' => '"TEST">=20',
+                'result' => false,
+            ),
+            array(
+                'expression' => '"TEST"<20',
+                'result' => false,
+            ),
+            array(
+                'expression' => '"TEST"<=20',
+                'result' => false,
+            ),
+            array(
+                'expression' => '"TEST"=0',
+                'result' => false,
+            ),
+            array(
+                'expression' => '"TEST"<>0',
+                'result' => true,
+            ),
+            array(
+                'expression' => '"TEST"<>1',
+                'result' => true,
+            ),
+            array(
+                'expression' => '"TEST"<>"TEST2"',
+                'result' => true,
+            ),
+            array(
+                'expression' => '"TEST"="TEST"',
+                'result' => true,
+            ),
+            array(
+                'expression' => '"TEST"<>"TEST"',
+                'result' => false,
+            ),
+            array(
+                'expression' => '"TEST">"TEST"',
+                'result' => false,
+            ),
+            array(
+                'expression' => '"TEST">="TEST"',
+                'result' => false,
+            ),
+            array(
+                'expression' => '"TEST"<"TEST"',
+                'result' => false,
+            ),
+            array(
+                'expression' => '"TEST"<="TEST"',
+                'result' => false,
+            ),
+            array(
+                'expression' => '1>1.5',
+                'result' => false,
+            ),
+            array(
+                'expression' => '1>=1.5',
+                'result' => false,
+            ),
+            array(
+                'expression' => '1<1.5',
+                'result' => true,
+            ),
+            array(
+                'expression' => '1<=1.5',
+                'result' => true,
+            ),
+            array(
+                'expression' => '1=1.5',
+                'result' => false,
+            ),
+            array(
+                'expression' => '1<>1.5',
+                'result' => true,
+            ),
+            array(
+                'expression' => '1=1.0',
+                'result' => true,
+            ),
+            array(
+                'expression' => '1<>1.0',
+                'result' => false,
+            ),
+            array(
+                'expression' => '1=1',
+                'result' => true,
+            ),
+            array(
+                'expression' => '1=2',
+                'result' => false,
+            ),
+            array(
+                'expression' => '1<>1',
+                'result' => false,
+            ),
+            array(
+                'expression' => '1<>2',
+                'result' => true,
+            ),
+            array(
+                'expression' => '1.5=1.5',
+                'result' => true,
+            ),
+            array(
+                'expression' => '1.5<>1.5',
+                'result' => false,
+            ),
+        );
+    }
+
+    /**
+     * @dataProvider typesDataProvider
+     *
+     * @param $expression
+     * @param $result
+     */
+    public function testTypes($expression, $result)
     {
         $this->container->loadFromExtension($this->extension->getAlias());
         $this->container->compile();
@@ -49,35 +204,11 @@ class ExcelExpressionLanguageTest extends AbstractFormulaInterpretorExtensionTes
         $formulaInterpretor = $this->container->get('profideo.formula_interpretor.excel.formula_interpretor');
 
         // Tests types such as string VS numeric / int VS float / ...
-        $this->assertFalse($formulaInterpretor->evaluate('"TEST">20'));
-        $this->assertFalse($formulaInterpretor->evaluate('"TEST">=20'));
-        $this->assertFalse($formulaInterpretor->evaluate('"TEST"<20'));
-        $this->assertFalse($formulaInterpretor->evaluate('"TEST"<=20'));
-        $this->assertFalse($formulaInterpretor->evaluate('"TEST"=0'));
-        $this->assertTrue($formulaInterpretor->evaluate('"TEST"<>0'));
-        $this->assertTrue($formulaInterpretor->evaluate('"TEST"<>1'));
-        $this->assertTrue($formulaInterpretor->evaluate('"TEST"<>"TEST2"'));
-        $this->assertTrue($formulaInterpretor->evaluate('"TEST"="TEST"'));
-        $this->assertFalse($formulaInterpretor->evaluate('"TEST"<>"TEST"'));
-        $this->assertFalse($formulaInterpretor->evaluate('"TEST">"TEST"'));
-        $this->assertFalse($formulaInterpretor->evaluate('"TEST">="TEST"'));
-        $this->assertFalse($formulaInterpretor->evaluate('"TEST"<"TEST"'));
-        $this->assertFalse($formulaInterpretor->evaluate('"TEST"<="TEST"'));
-
-        $this->assertFalse($formulaInterpretor->evaluate('1>1.5'));
-        $this->assertFalse($formulaInterpretor->evaluate('1>=1.5'));
-        $this->assertTrue($formulaInterpretor->evaluate('1<1.5'));
-        $this->assertTrue($formulaInterpretor->evaluate('1<=1.5'));
-        $this->assertFalse($formulaInterpretor->evaluate('1=1.5'));
-        $this->assertTrue($formulaInterpretor->evaluate('1<>1.5'));
-        $this->assertTrue($formulaInterpretor->evaluate('1=1.0'));
-        $this->assertFalse($formulaInterpretor->evaluate('1<>1.0'));
-        $this->assertTrue($formulaInterpretor->evaluate('1=1'));
-        $this->assertFalse($formulaInterpretor->evaluate('1=2'));
-        $this->assertFalse($formulaInterpretor->evaluate('1<>1'));
-        $this->assertTrue($formulaInterpretor->evaluate('1<>2'));
-        $this->assertTrue($formulaInterpretor->evaluate('1.5=1.5'));
-        $this->assertFalse($formulaInterpretor->evaluate('1.5<>1.5'));
+        if ($result) {
+            $this->assertTrue($formulaInterpretor->evaluate($expression));
+        } else {
+            $this->assertFalse($formulaInterpretor->evaluate($expression));
+        }
     }
 
     /**
