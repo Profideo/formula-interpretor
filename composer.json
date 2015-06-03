@@ -11,6 +11,10 @@
             "homepage": "http://profideo.com"
         }
     ],
+    "repositories": [{
+        "type": "vcs",
+        "url": "https://github.com/profideo-ci/expression-language"
+    }],
     "require": {
         "php": ">=5.3.9",
         "profideo-ci/expression-language": "dev-master"
