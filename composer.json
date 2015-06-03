@@ -19,6 +19,9 @@
         "php": ">=5.3.9",
         "profideo-ci/expression-language": "dev-master"
     },
+    "replace": {
+        "symfony/expression-language": "*"
+    },
     "autoload": {
         "psr-0": {
             "Profideo\\FormulaInterpretorBundle": ""
