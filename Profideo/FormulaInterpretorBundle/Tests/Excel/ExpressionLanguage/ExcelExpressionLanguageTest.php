@@ -15,6 +15,52 @@ class ExcelExpressionLanguageTest extends AbstractFormulaInterpretorExtensionTes
         $loader->load($resource.'.yml');
     }
 
+    public function replacesDataProvider()
+    {
+        return array(
+            array(
+                'expression' => '=IF(TRUE;"TE;ST")',
+                'result' => 'IF(TRUE,"TE;ST")',
+            ),
+            array(
+                'expression' => '=IF(1=2;"TE=ST")',
+                'result' => 'IF(1==2,"TE=ST")',
+            ),
+            array(
+                'expression' => '=IF(1<>2;"TE<>ST")',
+                'result' => 'IF(1!=2,"TE<>ST")',
+            ),
+            array(
+                'expression' => '=IF(1!=2;"TE!=ST")',
+                'result' => 'IF(1!=2,"TE!=ST")',
+            ),
+            array(
+                'expression' => '=IF(1>=2;"TE>=ST")',
+                'result' => 'IF(1>=2,"TE>=ST")',
+            ),
+            array(
+                'expression' => '=IF(1<=2;"TE<=ST")',
+                'result' => 'IF(1<=2,"TE<=ST")',
+            ),
+        );
+    }
+
+    /**
+     * @dataProvider replacesDataProvider
+     *
+     * @param $expression
+     * @param $result
+     */
+    public function testReplaces($expression, $result)
+    {
+        $this->loadConfiguration($this->container, 'config-1');
+        $this->container->compile();
+
+        $formulaInterpretor = $this->container->get('profideo.formula_interpretor.excel.formula_interpretor');
+
+        $this->assertSame($result, $formulaInterpretor->parse($expression)->__toString());
+    }
+
     public function testDefaultConfiguration()
     {
         $this->container->loadFromExtension($this->extension->getAlias());
@@ -24,6 +70,145 @@ class ExcelExpressionLanguageTest extends AbstractFormulaInterpretorExtensionTes
 
         // = not required + 0 as minimum function requirement.
         $this->assertFalse($formulaInterpretor->evaluate('15>20'));
+    }
+
+    public function typesDataProvider()
+    {
+        return array(
+            array(
+                'expression' => '"TEST">20',
+                'result' => false,
+            ),
+            array(
+                'expression' => '"TEST">=20',
+                'result' => false,
+            ),
+            array(
+                'expression' => '"TEST"<20',
+                'result' => false,
+            ),
+            array(
+                'expression' => '"TEST"<=20',
+                'result' => false,
+            ),
+            array(
+                'expression' => '"TEST"=0',
+                'result' => false,
+            ),
+            array(
+                'expression' => '"TEST"<>0',
+                'result' => true,
+            ),
+            array(
+                'expression' => '"TEST"<>1',
+                'result' => true,
+            ),
+            array(
+                'expression' => '"TEST"<>"TEST2"',
+                'result' => true,
+            ),
+            array(
+                'expression' => '"TEST"="TEST"',
+                'result' => true,
+            ),
+            array(
+                'expression' => '"TEST"<>"TEST"',
+                'result' => false,
+            ),
+            array(
+                'expression' => '"TEST">"TEST"',
+                'result' => false,
+            ),
+            array(
+                'expression' => '"TEST">="TEST"',
+                'result' => false,
+            ),
+            array(
+                'expression' => '"TEST"<"TEST"',
+                'result' => false,
+            ),
+            array(
+                'expression' => '"TEST"<="TEST"',
+                'result' => false,
+            ),
+            array(
+                'expression' => '1>1.5',
+                'result' => false,
+            ),
+            array(
+                'expression' => '1>=1.5',
+                'result' => false,
+            ),
+            array(
+                'expression' => '1<1.5',
+                'result' => true,
+            ),
+            array(
+                'expression' => '1<=1.5',
+                'result' => true,
+            ),
+            array(
+                'expression' => '1=1.5',
+                'result' => false,
+            ),
+            array(
+                'expression' => '1<>1.5',
+                'result' => true,
+            ),
+            array(
+                'expression' => '1=1.0',
+                'result' => true,
+            ),
+            array(
+                'expression' => '1<>1.0',
+                'result' => false,
+            ),
+            array(
+                'expression' => '1=1',
+                'result' => true,
+            ),
+            array(
+                'expression' => '1=2',
+                'result' => false,
+            ),
+            array(
+                'expression' => '1<>1',
+                'result' => false,
+            ),
+            array(
+                'expression' => '1<>2',
+                'result' => true,
+            ),
+            array(
+                'expression' => '1.5=1.5',
+                'result' => true,
+            ),
+            array(
+                'expression' => '1.5<>1.5',
+                'result' => false,
+            ),
+        );
+    }
+
+    /**
+     * @dataProvider typesDataProvider
+     *
+     * @param $expression
+     * @param $result
+     */
+    public function testTypes($expression, $result)
+    {
+        $this->container->loadFromExtension($this->extension->getAlias());
+        $this->container->compile();
+
+        $formulaInterpretor = $this->container->get('profideo.formula_interpretor.excel.formula_interpretor');
+
+        // Tests types such as string VS numeric / int VS float / ...
+        if ($result) {
+            $this->assertTrue($formulaInterpretor->evaluate($expression));
+        } else {
+            $this->assertFalse($formulaInterpretor->evaluate($expression));
+        }
     }
 
     /**
@@ -624,70 +809,40 @@ class ExcelExpressionLanguageTest extends AbstractFormulaInterpretorExtensionTes
         $this->assertSame('HELLO WORLD !', $formulaInterpretor->evaluate('CONCATENATE(HELLO;" ";WORLD())'));
     }
 
-    public function typeValidationDataProvider()
+    public function getFunctions()
     {
         return array(
             array(
-                'expression' => '2>1',
-                'result' => true,
+                'config' => 'config-0',
+                'functions' => array('constant', 'AND', 'ET', 'CONCATENATE', 'CONCATENER', 'IF', 'SI', 'MAX', 'MIN', 'OR', 'OU', 'POW', 'PUISSANCE', 'ROUND', 'ARRONDI'),
             ),
             array(
-                'expression' => 'C1>1',
-                'result' => null,
-                'exception' => 'Compared values C1 and 1 are not the same type.',
-                'values' => array('C1' => 'a'),
-                'types' => array('C1' => 'string'),
+                'config' => 'config-1',
+                'functions' => array('constant', 'AND', 'ET', 'CONCATENATE', 'CONCATENER', 'IF', 'SI', 'MAX', 'MIN', 'OR', 'OU', 'POW', 'PUISSANCE', 'ROUND', 'ARRONDI'),
             ),
             array(
-                'expression' => 'C1>1',
-                'result' => true,
-                'values' => array('C1' => 5.55),
-                'types' => array('C1' => 'double'),
-            ),
-            array(
-                'expression' => 'C1=50',
-                'result' => true,
-                'values' => array('C1' => 50.000),
-                'types' => array('C1' => 'double'),
-            ),
-            array(
-                'expression' => 'C1<>50',
-                'result' => false,
-                'values' => array('C1' => 50.000),
-                'types' => array('C1' => 'double'),
+                'config' => 'config-2',
+                'functions' => array('constant', 'AND', 'ET', 'CONCATENATE', 'CONCATENER', 'IF', 'SI', 'MAX', 'MIN', 'OR', 'OU', 'POW', 'PUISSANCE', 'ROUND', 'ARRONDI', 'WORLD'),
             ),
         );
     }
 
     /**
-     * @dataProvider typeValidationDataProvider
+     * @dataProvider getFunctions
      *
-     * @param $expression
-     * @param $expectedResult
-     * @param null  $exception
-     * @param array $values
-     * @param array $types
+     * @param string $config
+     * @param array  $functions
      */
-    public function testTypeValidation($expression, $expectedResult, $exception = null, $values = array(), $types = array())
+    public function testGetFunctions($config, $functions)
     {
-        $this->loadConfiguration($this->container, 'config-0');
+        $this->loadConfiguration($this->container, $config);
         $this->container->compile();
 
         $formulaInterpretor = $this->container->get('profideo.formula_interpretor.excel.formula_interpretor');
 
-        if (null !== $exception) {
-            $this->setExpectedException(
-                '\Profideo\FormulaInterpretorBundle\Excel\ExpressionLanguage\ExpressionError',
-                $exception
-            );
-        }
-
-        $parsedFormula = $formulaInterpretor->parse($expression, array_keys($values), $types);
-
-        $result = $formulaInterpretor->evaluate($parsedFormula, $values);
-
-        if (!$exception) {
-            $this->assertSame($result, $expectedResult);
-        }
+        $this->assertSame(
+            $functions,
+            $formulaInterpretor->getFunctions()
+        );
     }
 }
