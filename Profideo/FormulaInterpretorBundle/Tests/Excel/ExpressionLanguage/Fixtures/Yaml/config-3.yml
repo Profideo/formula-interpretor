@@ -4,6 +4,9 @@ formula_interpretor:
             hello:
                 value: "HELLO"
                 translations: [hello]
+            bonjour:
+                value: "BONJOUR"
+                translations: [bonjour]
         functions:
             world:
                 class: Profideo\FormulaInterpretorBundle\Tests\Excel\ExpressionLanguage\Fixtures\WorldExpressionFunction
@@ -11,9 +14,18 @@ formula_interpretor:
                     min: 0
                     max: 0
                 translations: [world]
+            monde:
+                class: Profideo\FormulaInterpretorBundle\Tests\Excel\ExpressionLanguage\Fixtures\MondeExpressionFunction
+                arguments:
+                    min: 0
+                    max: 0
+                translations: [monde]
         start_with_equal: false
         minimum_number_of_functions: 0
         scopes:
-            test2:
+            test3_1:
                 constants: [hello]
                 functions: [world]
+            test3_2:
+                constants: [bonjour]
+                functions: [monde]

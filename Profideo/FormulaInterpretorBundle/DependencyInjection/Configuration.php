@@ -43,6 +43,7 @@ class Configuration implements ConfigurationInterface
                     ->min(0)
                     ->defaultValue(0)
                 ->end()
+            ->append($this->getFormulaInterpretorExcelScopeNode())
             ->end()
         ;
 
@@ -109,6 +110,29 @@ class Configuration implements ConfigurationInterface
                     ->arrayNode('translations')
                         ->isRequired()
                         ->requiresAtLeastOneElement()
+                        ->prototype('scalar')->end()
+                    ->end()
+                ->end()
+            ->end()
+        ;
+
+        return $node;
+    }
+
+    private function getFormulaInterpretorExcelScopeNode()
+    {
+        $treeBuilder = new TreeBuilder();
+        $node = $treeBuilder->root('scopes');
+
+        $node
+            ->useAttributeAsKey('name')
+            ->treatNullLike(array())
+            ->prototype('array')
+                ->children()
+                    ->arrayNode('constants')
+                        ->prototype('scalar')->end()
+                    ->end()
+                    ->arrayNode('functions')
                         ->prototype('scalar')->end()
                     ->end()
                 ->end()

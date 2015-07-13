@@ -2,3 +2,5 @@ formula_interpretor:
     excel:
         start_with_equal: true
         minimum_number_of_functions: 1
+        scopes:
+            test1: ~
