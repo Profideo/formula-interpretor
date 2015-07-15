@@ -11,9 +11,9 @@ formula_interpretor:
                     min: 0
                     max: 0
                 translations: [world]
-        start_with_equal: false
-        minimum_number_of_functions: 0
         scopes:
             test2:
                 constants: [hello]
                 functions: [world]
+                start_with_equal: false
+                minimum_number_of_functions: 0

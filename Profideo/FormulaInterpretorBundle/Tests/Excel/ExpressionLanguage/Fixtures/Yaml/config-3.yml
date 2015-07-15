@@ -20,12 +20,14 @@ formula_interpretor:
                     min: 0
                     max: 0
                 translations: [monde]
-        start_with_equal: false
-        minimum_number_of_functions: 0
         scopes:
             test3_1:
                 constants: [hello]
                 functions: [world]
+                start_with_equal: false
+                minimum_number_of_functions: 0
             test3_2:
                 constants: [bonjour]
                 functions: [monde]
+                start_with_equal: false
+                minimum_number_of_functions: 0

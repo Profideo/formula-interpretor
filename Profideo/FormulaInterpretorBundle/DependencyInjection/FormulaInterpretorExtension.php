@@ -125,8 +125,8 @@ class FormulaInterpretorExtension extends Extension
                 null,
                 [$container->getDefinition("profideo.formula_interpretor.excel.expression_language_provider.$scopeName")],
                 $constants,
-                $config['start_with_equal'],
-                $config['minimum_number_of_functions'],
+                $scope['start_with_equal'],
+                $scope['minimum_number_of_functions'],
             ));
             $expressionLanguage->setPublic(false);
             $container->setDefinition("profideo.formula_interpretor.excel.expression_language.$scopeName", $expressionLanguage);

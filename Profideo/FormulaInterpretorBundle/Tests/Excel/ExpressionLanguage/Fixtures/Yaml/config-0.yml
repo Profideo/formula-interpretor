@@ -1,6 +1,4 @@
 formula_interpretor:
     excel:
-        start_with_equal: false
-        minimum_number_of_functions: 0
         scopes:
             test0: ~
