@@ -2,12 +2,3 @@ parameters:
     profideo.formula_interpretor.excel.expression_language.class: Profideo\FormulaInterpretorBundle\Excel\ExpressionLanguage\ExpressionLanguage
     profideo.formula_interpretor.excel.formula_interpretor.class: Profideo\FormulaInterpretorBundle\Excel\ExpressionLanguage\FormulaInterpretor
     profideo.formula_interpretor.excel.expression_language_provider.class: Profideo\FormulaInterpretorBundle\Excel\ExpressionLanguage\ExpressionLanguageProvider
-
-services:
-    profideo.formula_interpretor.excel.formula_interpretor:
-        class: %profideo.formula_interpretor.excel.formula_interpretor.class%
-        arguments:
-            - @profideo.formula_interpretor.excel.expression_language
-
-    profideo.formula_interpretor.excel.expression_language:
-        class: %profideo.formula_interpretor.excel.expression_language.class%

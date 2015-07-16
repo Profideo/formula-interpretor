@@ -35,14 +35,7 @@ class Configuration implements ConfigurationInterface
         $node
             ->append($this->getFormulaInterpretorExcelConstantsNode())
             ->append($this->getFormulaInterpretorExcelFunctionsNode())
-            ->children()
-                ->booleanNode('start_with_equal')
-                    ->defaultFalse()
-                ->end()
-                ->integerNode('minimum_number_of_functions')
-                    ->min(0)
-                    ->defaultValue(0)
-                ->end()
+            ->append($this->getFormulaInterpretorExcelScopeNode())
             ->end()
         ;
 
@@ -110,6 +103,36 @@ class Configuration implements ConfigurationInterface
                         ->isRequired()
                         ->requiresAtLeastOneElement()
                         ->prototype('scalar')->end()
+                    ->end()
+                ->end()
+            ->end()
+        ;
+
+        return $node;
+    }
+
+    private function getFormulaInterpretorExcelScopeNode()
+    {
+        $treeBuilder = new TreeBuilder();
+        $node = $treeBuilder->root('scopes');
+
+        $node
+            ->useAttributeAsKey('name')
+            ->treatNullLike(array())
+            ->prototype('array')
+                ->children()
+                    ->arrayNode('constants')
+                        ->prototype('scalar')->end()
+                    ->end()
+                    ->arrayNode('functions')
+                        ->prototype('scalar')->end()
+                    ->end()
+                    ->booleanNode('start_with_equal')
+                        ->defaultFalse()
+                    ->end()
+                    ->integerNode('minimum_number_of_functions')
+                        ->min(0)
+                        ->defaultValue(0)
                     ->end()
                 ->end()
             ->end()

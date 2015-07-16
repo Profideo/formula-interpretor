@@ -56,20 +56,9 @@ class ExcelExpressionLanguageTest extends AbstractFormulaInterpretorExtensionTes
         $this->loadConfiguration($this->container, 'config-1');
         $this->container->compile();
 
-        $formulaInterpretor = $this->container->get('profideo.formula_interpretor.excel.formula_interpretor');
+        $formulaInterpretor = $this->container->get('profideo.formula_interpretor.excel.test1');
 
         $this->assertSame($result, $formulaInterpretor->parse($expression)->__toString());
-    }
-
-    public function testDefaultConfiguration()
-    {
-        $this->container->loadFromExtension($this->extension->getAlias());
-        $this->container->compile();
-
-        $formulaInterpretor = $this->container->get('profideo.formula_interpretor.excel.formula_interpretor');
-
-        // = not required + 0 as minimum function requirement.
-        $this->assertFalse($formulaInterpretor->evaluate('15>20'));
     }
 
     public function typesDataProvider()
@@ -198,10 +187,10 @@ class ExcelExpressionLanguageTest extends AbstractFormulaInterpretorExtensionTes
      */
     public function testTypes($expression, $result)
     {
-        $this->container->loadFromExtension($this->extension->getAlias());
+        $this->loadConfiguration($this->container, 'config-0');
         $this->container->compile();
 
-        $formulaInterpretor = $this->container->get('profideo.formula_interpretor.excel.formula_interpretor');
+        $formulaInterpretor = $this->container->get('profideo.formula_interpretor.excel.test0');
 
         // Tests types such as string VS numeric / int VS float / ...
         if ($result) {
@@ -220,7 +209,7 @@ class ExcelExpressionLanguageTest extends AbstractFormulaInterpretorExtensionTes
         $this->loadConfiguration($this->container, 'config-1');
         $this->container->compile();
 
-        $formulaInterpretor = $this->container->get('profideo.formula_interpretor.excel.formula_interpretor');
+        $formulaInterpretor = $this->container->get('profideo.formula_interpretor.excel.test1');
 
         $formulaInterpretor->evaluate('15>20');
     }
@@ -234,7 +223,7 @@ class ExcelExpressionLanguageTest extends AbstractFormulaInterpretorExtensionTes
         $this->loadConfiguration($this->container, 'config-1');
         $this->container->compile();
 
-        $formulaInterpretor = $this->container->get('profideo.formula_interpretor.excel.formula_interpretor');
+        $formulaInterpretor = $this->container->get('profideo.formula_interpretor.excel.test1');
 
         $formulaInterpretor->evaluate('=15>20');
     }
@@ -278,7 +267,7 @@ class ExcelExpressionLanguageTest extends AbstractFormulaInterpretorExtensionTes
         $this->loadConfiguration($this->container, 'config-0');
         $this->container->compile();
 
-        $formulaInterpretor = $this->container->get('profideo.formula_interpretor.excel.formula_interpretor');
+        $formulaInterpretor = $this->container->get('profideo.formula_interpretor.excel.test0');
 
         if (null !== $exception) {
             $this->setExpectedException(
@@ -346,7 +335,7 @@ class ExcelExpressionLanguageTest extends AbstractFormulaInterpretorExtensionTes
         $this->loadConfiguration($this->container, 'config-1');
         $this->container->compile();
 
-        $formulaInterpretor = $this->container->get('profideo.formula_interpretor.excel.formula_interpretor');
+        $formulaInterpretor = $this->container->get('profideo.formula_interpretor.excel.test1');
 
         if (null !== $exception) {
             $this->setExpectedException(
@@ -409,7 +398,7 @@ class ExcelExpressionLanguageTest extends AbstractFormulaInterpretorExtensionTes
         $this->loadConfiguration($this->container, 'config-1');
         $this->container->compile();
 
-        $formulaInterpretor = $this->container->get('profideo.formula_interpretor.excel.formula_interpretor');
+        $formulaInterpretor = $this->container->get('profideo.formula_interpretor.excel.test1');
 
         if (null !== $exception) {
             $this->setExpectedException(
@@ -469,7 +458,7 @@ class ExcelExpressionLanguageTest extends AbstractFormulaInterpretorExtensionTes
         $this->loadConfiguration($this->container, 'config-1');
         $this->container->compile();
 
-        $formulaInterpretor = $this->container->get('profideo.formula_interpretor.excel.formula_interpretor');
+        $formulaInterpretor = $this->container->get('profideo.formula_interpretor.excel.test1');
 
         if (null !== $exception) {
             $this->setExpectedException(
@@ -524,7 +513,7 @@ class ExcelExpressionLanguageTest extends AbstractFormulaInterpretorExtensionTes
         $this->loadConfiguration($this->container, 'config-1');
         $this->container->compile();
 
-        $formulaInterpretor = $this->container->get('profideo.formula_interpretor.excel.formula_interpretor');
+        $formulaInterpretor = $this->container->get('profideo.formula_interpretor.excel.test1');
 
         if (null !== $exception) {
             $this->setExpectedException(
@@ -579,7 +568,7 @@ class ExcelExpressionLanguageTest extends AbstractFormulaInterpretorExtensionTes
         $this->loadConfiguration($this->container, 'config-1');
         $this->container->compile();
 
-        $formulaInterpretor = $this->container->get('profideo.formula_interpretor.excel.formula_interpretor');
+        $formulaInterpretor = $this->container->get('profideo.formula_interpretor.excel.test1');
 
         if (null !== $exception) {
             $this->setExpectedException(
@@ -647,7 +636,7 @@ class ExcelExpressionLanguageTest extends AbstractFormulaInterpretorExtensionTes
         $this->loadConfiguration($this->container, 'config-1');
         $this->container->compile();
 
-        $formulaInterpretor = $this->container->get('profideo.formula_interpretor.excel.formula_interpretor');
+        $formulaInterpretor = $this->container->get('profideo.formula_interpretor.excel.test1');
 
         if (null !== $exception) {
             $this->setExpectedException(
@@ -707,7 +696,7 @@ class ExcelExpressionLanguageTest extends AbstractFormulaInterpretorExtensionTes
         $this->loadConfiguration($this->container, 'config-1');
         $this->container->compile();
 
-        $formulaInterpretor = $this->container->get('profideo.formula_interpretor.excel.formula_interpretor');
+        $formulaInterpretor = $this->container->get('profideo.formula_interpretor.excel.test1');
 
         if (null !== $exception) {
             $this->setExpectedException(
@@ -783,7 +772,7 @@ class ExcelExpressionLanguageTest extends AbstractFormulaInterpretorExtensionTes
         $this->loadConfiguration($this->container, 'config-1');
         $this->container->compile();
 
-        $formulaInterpretor = $this->container->get('profideo.formula_interpretor.excel.formula_interpretor');
+        $formulaInterpretor = $this->container->get('profideo.formula_interpretor.excel.test1');
 
         if (null !== $exception) {
             $this->setExpectedException(
@@ -804,7 +793,7 @@ class ExcelExpressionLanguageTest extends AbstractFormulaInterpretorExtensionTes
         $this->loadConfiguration($this->container, 'config-2');
         $this->container->compile();
 
-        $formulaInterpretor = $this->container->get('profideo.formula_interpretor.excel.formula_interpretor');
+        $formulaInterpretor = $this->container->get('profideo.formula_interpretor.excel.test2');
 
         $this->assertSame('HELLO WORLD !', $formulaInterpretor->evaluate('CONCATENATE(HELLO;" ";WORLD())'));
     }
@@ -815,14 +804,27 @@ class ExcelExpressionLanguageTest extends AbstractFormulaInterpretorExtensionTes
             array(
                 'config' => 'config-0',
                 'functions' => array('constant', 'AND', 'ET', 'CONCATENATE', 'CONCATENER', 'IF', 'SI', 'MAX', 'MIN', 'OR', 'OU', 'POW', 'PUISSANCE', 'ROUND', 'ARRONDI'),
+                'service' => 'test0',
             ),
             array(
                 'config' => 'config-1',
                 'functions' => array('constant', 'AND', 'ET', 'CONCATENATE', 'CONCATENER', 'IF', 'SI', 'MAX', 'MIN', 'OR', 'OU', 'POW', 'PUISSANCE', 'ROUND', 'ARRONDI'),
+                'service' => 'test1',
             ),
             array(
                 'config' => 'config-2',
                 'functions' => array('constant', 'AND', 'ET', 'CONCATENATE', 'CONCATENER', 'IF', 'SI', 'MAX', 'MIN', 'OR', 'OU', 'POW', 'PUISSANCE', 'ROUND', 'ARRONDI', 'WORLD'),
+                'service' => 'test2',
+            ),
+            array(
+                'config' => 'config-3',
+                'functions' => array('constant', 'AND', 'ET', 'CONCATENATE', 'CONCATENER', 'IF', 'SI', 'MAX', 'MIN', 'OR', 'OU', 'POW', 'PUISSANCE', 'ROUND', 'ARRONDI', 'WORLD'),
+                'service' => 'test3_1',
+            ),
+            array(
+                'config' => 'config-3',
+                'functions' => array('constant', 'AND', 'ET', 'CONCATENATE', 'CONCATENER', 'IF', 'SI', 'MAX', 'MIN', 'OR', 'OU', 'POW', 'PUISSANCE', 'ROUND', 'ARRONDI', 'MONDE'),
+                'service' => 'test3_2',
             ),
         );
     }
@@ -832,17 +834,87 @@ class ExcelExpressionLanguageTest extends AbstractFormulaInterpretorExtensionTes
      *
      * @param string $config
      * @param array  $functions
+     * @param string $service
      */
-    public function testGetFunctions($config, $functions)
+    public function testGetFunctions($config, $functions, $service)
     {
         $this->loadConfiguration($this->container, $config);
         $this->container->compile();
 
-        $formulaInterpretor = $this->container->get('profideo.formula_interpretor.excel.formula_interpretor');
+        $formulaInterpretor = $this->container->get("profideo.formula_interpretor.excel.$service");
 
         $this->assertSame(
             $functions,
             $formulaInterpretor->getFunctions()
         );
+    }
+
+    public function testMultiConfig()
+    {
+        $this->loadConfiguration($this->container, 'config-3');
+        $this->container->compile();
+
+        $formulaInterpretor1 = $this->container->get('profideo.formula_interpretor.excel.test3_1');
+        $formulaInterpretor2 = $this->container->get('profideo.formula_interpretor.excel.test3_2');
+
+        $this->assertSame('HELLO WORLD !', $formulaInterpretor1->evaluate('CONCATENATE(HELLO;" ";WORLD())'));
+        $this->assertSame('BONJOUR LE MONDE !', $formulaInterpretor2->evaluate('CONCATENATE(BONJOUR;" ";MONDE())'));
+    }
+
+    public function getMultiConfigConstants()
+    {
+        return array(
+            array(
+                'service' => 'test3_1',
+                'constant' => 'HELLO',
+                'result' => 'HELLO',
+            ),
+            array(
+                'service' => 'test3_1',
+                'constant' => 'BONJOUR',
+                'result' => null,
+                'exception' => 'Variable "BONJOUR" is not valid around position 1',
+            ),
+            array(
+                'service' => 'test3_2',
+                'constant' => 'BONJOUR',
+                'result' => 'BONJOUR',
+            ),
+            array(
+                'service' => 'test3_2',
+                'constant' => 'HELLO',
+                'result' => null,
+                'exception' => 'Variable "HELLO" is not valid around position 1',
+            ),
+        );
+    }
+
+    /**
+     * @dataProvider getMultiConfigConstants
+     *
+     * @param $service
+     * @param $constant
+     * @param $expectedResult
+     * @param null $exception
+     */
+    public function testMultiConfigConstants($service, $constant, $expectedResult, $exception = null)
+    {
+        $this->loadConfiguration($this->container, 'config-3');
+        $this->container->compile();
+
+        if (null !== $exception) {
+            $this->setExpectedException(
+                '\Symfony\Component\ExpressionLanguage\SyntaxError',
+                $exception
+            );
+        }
+
+        $formulaInterpretor = $this->container->get("profideo.formula_interpretor.excel.$service");
+
+        $result = $formulaInterpretor->evaluate($constant);
+
+        if (!$exception) {
+            $this->assertSame($result, $expectedResult);
+        }
     }
 }
