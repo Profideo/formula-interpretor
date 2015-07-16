@@ -2,11 +2,11 @@
 
 namespace Profideo\FormulaInterpretorBundle\Excel\ExpressionLanguage;
 
-use Symfony\Component\ExpressionLanguage\Expression;
-use Symfony\Component\ExpressionLanguage\ExpressionFunctionProviderInterface;
-use Symfony\Component\ExpressionLanguage\ExpressionLanguage as BaseExpressionLanguage;
-use Symfony\Component\ExpressionLanguage\ParsedExpression;
-use Symfony\Component\ExpressionLanguage\ParserCache\ParserCacheInterface;
+use Profideo\Component\ExpressionLanguage\Expression;
+use Profideo\Component\ExpressionLanguage\ExpressionFunctionProviderInterface;
+use Profideo\Component\ExpressionLanguage\ExpressionLanguage as BaseExpressionLanguage;
+use Profideo\Component\ExpressionLanguage\ParsedExpression;
+use Profideo\Component\ExpressionLanguage\ParserCache\ParserCacheInterface;
 
 class ExpressionLanguage extends BaseExpressionLanguage
 {

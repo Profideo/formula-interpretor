@@ -2,7 +2,7 @@
 
 namespace Profideo\FormulaInterpretorBundle\Excel\ExpressionLanguage;
 
-use Symfony\Component\ExpressionLanguage\ExpressionFunctionProviderInterface;
+use Profideo\Component\ExpressionLanguage\ExpressionFunctionProviderInterface;
 
 class ExpressionLanguageProvider implements ExpressionFunctionProviderInterface
 {
@@ -20,7 +20,7 @@ class ExpressionLanguageProvider implements ExpressionFunctionProviderInterface
     }
 
     /**
-     * @return array|\Symfony\Component\ExpressionLanguage\ExpressionFunction[]
+     * @return array|\Profideo\Component\ExpressionLanguage\ExpressionFunction[]
      */
     public function getFunctions()
     {

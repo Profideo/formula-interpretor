@@ -4,10 +4,10 @@ namespace Profideo\FormulaInterpretorBundle\Excel\ExpressionLanguage\ExpressionF
 
 use Profideo\FormulaInterpretorBundle\Excel\ExpressionLanguage\ExpressionError;
 use Symfony\Component\DependencyInjection\Container;
-use Symfony\Component\ExpressionLanguage\ExpressionFunction as BaseExpressionFunction;
+use Profideo\Component\ExpressionLanguage\ExpressionFunction as BaseExpressionFunction;
 
 /**
- * @see Symfony\Component\ExpressionLanguage\ExpressionFunction
+ * @see Profideo\Component\ExpressionLanguage\ExpressionFunction
  *
  * Represents a function that can be used in an expression.
  *

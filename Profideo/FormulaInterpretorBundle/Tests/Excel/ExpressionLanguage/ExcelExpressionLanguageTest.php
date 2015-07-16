@@ -271,7 +271,7 @@ class ExcelExpressionLanguageTest extends AbstractFormulaInterpretorExtensionTes
 
         if (null !== $exception) {
             $this->setExpectedException(
-                '\Symfony\Component\ExpressionLanguage\SyntaxError',
+                '\Profideo\Component\ExpressionLanguage\SyntaxError',
                 $exception
             );
         }
@@ -904,7 +904,7 @@ class ExcelExpressionLanguageTest extends AbstractFormulaInterpretorExtensionTes
 
         if (null !== $exception) {
             $this->setExpectedException(
-                '\Symfony\Component\ExpressionLanguage\SyntaxError',
+                '\Profideo\Component\ExpressionLanguage\SyntaxError',
                 $exception
             );
         }

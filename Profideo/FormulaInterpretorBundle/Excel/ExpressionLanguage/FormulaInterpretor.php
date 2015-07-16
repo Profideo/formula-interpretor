@@ -2,7 +2,7 @@
 
 namespace Profideo\FormulaInterpretorBundle\Excel\ExpressionLanguage;
 
-use Symfony\Component\ExpressionLanguage\ParsedExpression;
+use Profideo\Component\ExpressionLanguage\ParsedExpression;
 
 class FormulaInterpretor
 {
