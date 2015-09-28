@@ -2,12 +2,12 @@
 
 namespace Profideo\FormulaInterpretorBundle\Tests\Excel\ExpressionLanguage;
 
-use Profideo\FormulaInterpretorBundle\Tests\AbstractFormulaInterpretorExtensionTest;
+use Profideo\FormulaInterpretorBundle\Tests\AbstractProfideoFormulaInterpretorExtensionTest;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 
-class ExcelExpressionLanguageTest extends AbstractFormulaInterpretorExtensionTest
+class ExcelExpressionLanguageTest extends AbstractProfideoFormulaInterpretorExtensionTest
 {
     protected function loadConfiguration(ContainerBuilder $container, $resource)
     {

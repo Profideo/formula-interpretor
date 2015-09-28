@@ -1,4 +1,4 @@
-formula_interpretor:
+profideo_formula_interpretor:
     excel:
         scopes:
             test1:

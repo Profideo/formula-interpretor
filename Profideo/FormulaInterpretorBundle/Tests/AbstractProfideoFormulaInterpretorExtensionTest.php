@@ -2,14 +2,14 @@
 
 namespace Profideo\FormulaInterpretorBundle\Tests;
 
-use Profideo\FormulaInterpretorBundle\DependencyInjection\FormulaInterpretorExtension;
+use Profideo\FormulaInterpretorBundle\DependencyInjection\ProfideoFormulaInterpretorExtension;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
-abstract class AbstractFormulaInterpretorExtensionTest extends KernelTestCase
+abstract class AbstractProfideoFormulaInterpretorExtensionTest extends KernelTestCase
 {
     /**
-     * @var FormulaInterpretorExtension
+     * @var ProfideoFormulaInterpretorExtension
      */
     protected $extension;
 
@@ -20,7 +20,7 @@ abstract class AbstractFormulaInterpretorExtensionTest extends KernelTestCase
 
     protected function setUp()
     {
-        $this->extension = new FormulaInterpretorExtension();
+        $this->extension = new ProfideoFormulaInterpretorExtension();
 
         $this->container = new ContainerBuilder();
         $this->container->registerExtension($this->extension);

@@ -10,7 +10,7 @@ use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 use Symfony\Component\DependencyInjection\Loader;
 
-class FormulaInterpretorExtension extends Extension
+class ProfideoFormulaInterpretorExtension extends Extension
 {
     private $excelFunctionBaseName = 'profideo.formula_interpretor.excel.function';
 
