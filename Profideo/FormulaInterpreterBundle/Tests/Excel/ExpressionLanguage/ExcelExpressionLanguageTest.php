@@ -929,11 +929,15 @@ class ExcelExpressionLanguageTest extends AbstractProfideoFormulaInterpreterExte
         $serviceTest2->setClass('Profideo\FormulaInterpreterBundle\Tests\Excel\ExpressionLanguage\Fixtures\ServiceTest2');
         $this->container->setDefinition('profideo_formula_interpreter.test2', $serviceTest2);
 
+        $serviceTest3 = new Definition();
+        $serviceTest3->setClass('Profideo\FormulaInterpreterBundle\Tests\Excel\ExpressionLanguage\Fixtures\ServiceTest3');
+        $this->container->setDefinition('profideo_formula_interpreter.test3', $serviceTest3);
+
         $this->loadConfiguration($this->container, 'config-4');
         $this->container->compile();
 
         $formulaInterpreter = $this->container->get('profideo.formula_interpreter.excel.test4');
 
-        $this->assertSame('test 1 test 2', $formulaInterpreter->evaluate('test()'));
+        $this->assertSame('test 1 test 2 test 3', $formulaInterpreter->evaluate('test()'));
     }
 }

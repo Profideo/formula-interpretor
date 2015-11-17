@@ -8,7 +8,7 @@ profideo_formula_interpreter:
                     max: 0
                 translations: [test]
                 services:
-                    - [setTest1, [@profideo_formula_interpreter.test1]]
+                    - [setTest13, [@profideo_formula_interpreter.test1, @profideo_formula_interpreter.test3]]
                     - [setTest2, [@profideo_formula_interpreter.test2]]
         scopes:
             test4:

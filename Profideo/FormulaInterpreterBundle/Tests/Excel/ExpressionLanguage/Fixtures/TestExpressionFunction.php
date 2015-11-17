@@ -16,6 +16,11 @@ class TestExpressionFunction extends ExpressionFunction
      */
     private $serviceTest2;
 
+    /**
+     * @var ServiceTest3
+     */
+    private $serviceTest3;
+
     protected function getCompilerFunction()
     {
         return sprintf('%s()', $this->getName());
@@ -23,12 +28,13 @@ class TestExpressionFunction extends ExpressionFunction
 
     protected function getEvaluatorFunction()
     {
-        return "{$this->serviceTest1->getTest()} {$this->serviceTest2->getTest()}";
+        return "{$this->serviceTest1->getTest()} {$this->serviceTest2->getTest()} {$this->serviceTest3->getTest()}";
     }
 
-    public function setTest1(ServiceTest1 $serviceTest1)
+    public function setTest13(ServiceTest1 $serviceTest1, ServiceTest3 $serviceTest3)
     {
         $this->serviceTest1 = $serviceTest1;
+        $this->serviceTest3 = $serviceTest3;
 
         return $this;
     }
