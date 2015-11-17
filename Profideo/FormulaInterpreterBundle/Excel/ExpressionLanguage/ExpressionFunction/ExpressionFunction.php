@@ -3,7 +3,6 @@
 namespace Profideo\FormulaInterpreterBundle\Excel\ExpressionLanguage\ExpressionFunction;
 
 use Profideo\FormulaInterpreterBundle\Excel\ExpressionLanguage\ExpressionError;
-use Symfony\Component\DependencyInjection\Container;
 use Profideo\Component\ExpressionLanguage\ExpressionFunction as BaseExpressionFunction;
 
 /**
@@ -25,11 +24,6 @@ use Profideo\Component\ExpressionLanguage\ExpressionFunction as BaseExpressionFu
  */
 abstract class ExpressionFunction extends BaseExpressionFunction
 {
-    /**
-     * @var Container
-     */
-    protected $container;
-
     /**
      * @var int
      */
@@ -65,18 +59,6 @@ abstract class ExpressionFunction extends BaseExpressionFunction
                 return call_user_func_array([$this, 'getEvaluatorFunction'], func_get_args());
             }
         );
-    }
-
-    /**
-     * @param Container $container
-     *
-     * @return ExpressionFunction
-     */
-    public function setContainer(Container $container)
-    {
-        $this->container = $container;
-
-        return $this;
     }
 
     /**

@@ -104,6 +104,32 @@ class Configuration implements ConfigurationInterface
                         ->requiresAtLeastOneElement()
                         ->prototype('scalar')->end()
                     ->end()
+
+                    ->arrayNode('services')
+                        ->defaultValue(array())
+                        ->beforeNormalization()
+                            ->ifArray()
+                                ->then(function($values) {
+                                    $services = array();
+
+                                    foreach ($values as $value) {
+                                        $services[] = array('method' => $value[0], 'parameters' => $value[1]);
+                                    }
+
+                                    return $services;
+                                })
+                            ->end()
+                        ->prototype('array')
+                            ->children()
+                                ->scalarNode('method')->end()
+                                ->arrayNode('parameters')
+                                    ->isRequired()
+                                    ->requiresAtLeastOneElement()
+                                    ->prototype('scalar')->end()
+                                ->end()
+                            ->end()
+                        ->end()
+                    ->end()
                 ->end()
             ->end()
         ;
