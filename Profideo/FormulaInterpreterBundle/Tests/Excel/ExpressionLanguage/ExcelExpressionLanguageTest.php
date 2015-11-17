@@ -5,6 +5,7 @@ namespace Profideo\FormulaInterpreterBundle\Tests\Excel\ExpressionLanguage;
 use Profideo\FormulaInterpreterBundle\Tests\AbstractProfideoFormulaInterpreterExtensionTest;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 
 class ExcelExpressionLanguageTest extends AbstractProfideoFormulaInterpreterExtensionTest
@@ -916,5 +917,23 @@ class ExcelExpressionLanguageTest extends AbstractProfideoFormulaInterpreterExte
         if (!$exception) {
             $this->assertSame($result, $expectedResult);
         }
+    }
+
+    public function testServicesConfig()
+    {
+        $serviceTest1 = new Definition();
+        $serviceTest1->setClass('Profideo\FormulaInterpreterBundle\Tests\Excel\ExpressionLanguage\Fixtures\ServiceTest1');
+        $this->container->setDefinition('profideo_formula_interpreter.test1', $serviceTest1);
+
+        $serviceTest2 = new Definition();
+        $serviceTest2->setClass('Profideo\FormulaInterpreterBundle\Tests\Excel\ExpressionLanguage\Fixtures\ServiceTest2');
+        $this->container->setDefinition('profideo_formula_interpreter.test2', $serviceTest2);
+
+        $this->loadConfiguration($this->container, 'config-4');
+        $this->container->compile();
+
+        $formulaInterpreter = $this->container->get('profideo.formula_interpreter.excel.test4');
+
+        $this->assertSame('test 1 test 2', $formulaInterpreter->evaluate('test()'));
     }
 }
