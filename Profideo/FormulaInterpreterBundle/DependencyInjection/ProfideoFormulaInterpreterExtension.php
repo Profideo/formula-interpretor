@@ -78,7 +78,7 @@ class ProfideoFormulaInterpreterExtension extends Extension
                     $functionDefinition->setScope(ContainerInterface::SCOPE_PROTOTYPE);
 
                     foreach ($function['services'] as $service) {
-                        $parameters = [];
+                        $parameters = array();
 
                         foreach ($service['parameters'] as $parameter) {
                             $parameters[] = new Reference(ltrim($parameter, '@'));
