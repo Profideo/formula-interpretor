@@ -1,0 +1,17 @@
+profideo_formula_interpreter:
+    excel:
+        functions:
+            test:
+                class: Profideo\FormulaInterpreterBundle\Tests\Excel\ExpressionLanguage\Fixtures\TestExpressionFunction
+                arguments:
+                    min: 0
+                    max: 0
+                translations: [test]
+                services:
+                    - [setTest13, [@profideo_formula_interpreter.test1, @profideo_formula_interpreter.test3]]
+                    - [setTest2, [@profideo_formula_interpreter.test2]]
+        scopes:
+            test4:
+                functions: [test]
+                start_with_equal: false
+                minimum_number_of_functions: 0
