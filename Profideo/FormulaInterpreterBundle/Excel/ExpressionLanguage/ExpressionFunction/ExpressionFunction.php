@@ -66,18 +66,18 @@ abstract class ExpressionFunction extends BaseExpressionFunction
 
     /**
      * @param ExpressionFunction $expressionFunction
-     * @param $arguments
+     * @param array              $arguments
      */
-    private function validateCompilerFunctionArguments(ExpressionFunction $expressionFunction, $arguments)
+    private function validateCompilerFunctionArguments(ExpressionFunction $expressionFunction, array $arguments)
     {
         $this->validateArguments(count($arguments), $this->getMinArguments(), $this->getMaxArguments());
     }
 
     /**
      * @param ExpressionFunction $expressionFunction
-     * @param $arguments
+     * @param array              $arguments
      */
-    private function validateEvaluatorFunctionArguments(ExpressionFunction $expressionFunction, $arguments)
+    private function validateEvaluatorFunctionArguments(ExpressionFunction $expressionFunction, array $arguments)
     {
         $this->validateArguments(count($arguments) - 1, $this->getMinArguments(), $this->getMaxArguments());
     }
