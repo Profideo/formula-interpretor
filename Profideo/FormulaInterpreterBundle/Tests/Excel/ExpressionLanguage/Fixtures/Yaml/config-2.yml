@@ -7,9 +7,6 @@ profideo_formula_interpreter:
         functions:
             world:
                 class: Profideo\FormulaInterpreterBundle\Tests\Excel\ExpressionLanguage\Fixtures\WorldExpressionFunction
-                arguments:
-                    min: 0
-                    max: 0
                 translations: [world]
         scopes:
             test2:

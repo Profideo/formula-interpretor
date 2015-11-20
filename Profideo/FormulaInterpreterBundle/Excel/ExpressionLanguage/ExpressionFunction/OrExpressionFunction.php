@@ -52,4 +52,20 @@ class OrExpressionFunction extends ExpressionFunction
 
         return $returnValue;
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function getMinArguments()
+    {
+        return 1;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function getMaxArguments()
+    {
+        return -1;
+    }
 }

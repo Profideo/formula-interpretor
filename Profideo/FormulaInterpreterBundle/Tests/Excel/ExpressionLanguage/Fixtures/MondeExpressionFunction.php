@@ -15,4 +15,20 @@ class MondeExpressionFunction extends ExpressionFunction
     {
         return 'LE MONDE !';
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function getMinArguments()
+    {
+        return 0;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function getMaxArguments()
+    {
+        return 0;
+    }
 }

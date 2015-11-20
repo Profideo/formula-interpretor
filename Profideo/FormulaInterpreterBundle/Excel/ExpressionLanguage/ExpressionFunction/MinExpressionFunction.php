@@ -34,4 +34,20 @@ class MinExpressionFunction extends ExpressionFunction
 
         return $minValue;
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function getMinArguments()
+    {
+        return 1;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function getMaxArguments()
+    {
+        return -1;
+    }
 }

@@ -67,13 +67,7 @@ class ProfideoFormulaInterpreterExtension extends Extension
 
                     $functionDefinition = new Definition();
                     $functionDefinition->setClass($container->getParameter($functionClassParameter));
-                    $functionDefinition->setArguments(array(
-                        $translation,
-                        null,
-                        null,
-                        $function['arguments']['min'],
-                        $function['arguments']['max'],
-                    ));
+                    $functionDefinition->setArguments(array($translation));
                     $functionDefinition->setPublic(false);
                     $functionDefinition->setScope(ContainerInterface::SCOPE_PROTOTYPE);
 
@@ -164,73 +158,41 @@ class ProfideoFormulaInterpreterExtension extends Extension
         return array(
             'and' => array(
                 'class' => 'Profideo\FormulaInterpreterBundle\Excel\ExpressionLanguage\ExpressionFunction\AndExpressionFunction',
-                'arguments' => array(
-                    'min' => 1,
-                    'max' => -1,
-                ),
                 'translations' => array('AND', 'ET'),
                 'services' => array(),
             ),
             'concatenate' => array(
                 'class' => 'Profideo\FormulaInterpreterBundle\Excel\ExpressionLanguage\ExpressionFunction\ConcatenateExpressionFunction',
-                'arguments' => array(
-                    'min' => 1,
-                    'max' => -1,
-                ),
                 'translations' => array('CONCATENATE', 'CONCATENER'),
                 'services' => array(),
             ),
             'if' => array(
                 'class' => 'Profideo\FormulaInterpreterBundle\Excel\ExpressionLanguage\ExpressionFunction\IfExpressionFunction',
-                'arguments' => array(
-                    'min' => 2,
-                    'max' => 3,
-                ),
                 'translations' => array('IF', 'SI'),
                 'services' => array(),
             ),
             'max' => array(
                 'class' => 'Profideo\FormulaInterpreterBundle\Excel\ExpressionLanguage\ExpressionFunction\MaxExpressionFunction',
-                'arguments' => array(
-                    'min' => 1,
-                    'max' => -1,
-                ),
                 'translations' => array('MAX'),
                 'services' => array(),
             ),
             'min' => array(
                 'class' => 'Profideo\FormulaInterpreterBundle\Excel\ExpressionLanguage\ExpressionFunction\MinExpressionFunction',
-                'arguments' => array(
-                    'min' => 1,
-                    'max' => -1,
-                ),
                 'translations' => array('MIN'),
                 'services' => array(),
             ),
             'or' => array(
                 'class' => 'Profideo\FormulaInterpreterBundle\Excel\ExpressionLanguage\ExpressionFunction\OrExpressionFunction',
-                'arguments' => array(
-                    'min' => 1,
-                    'max' => -1,
-                ),
                 'translations' => array('OR', 'OU'),
                 'services' => array(),
             ),
             'pow' => array(
                 'class' => 'Profideo\FormulaInterpreterBundle\Excel\ExpressionLanguage\ExpressionFunction\PowExpressionFunction',
-                'arguments' => array(
-                    'min' => 2,
-                    'max' => 2,
-                ),
                 'translations' => array('POW', 'PUISSANCE'),
                 'services' => array(),
             ),
             'round' => array(
                 'class' => 'Profideo\FormulaInterpreterBundle\Excel\ExpressionLanguage\ExpressionFunction\RoundExpressionFunction',
-                'arguments' => array(
-                    'min' => 2,
-                    'max' => 2,
-                ),
                 'translations' => array('ROUND', 'ARRONDI'),
                 'services' => array(),
             ),

@@ -22,4 +22,20 @@ class RoundExpressionFunction extends ExpressionFunction
     {
         return round(func_get_arg(1), func_get_arg(2), PHP_ROUND_HALF_UP);
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function getMinArguments()
+    {
+        return 2;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function getMaxArguments()
+    {
+        return 2;
+    }
 }

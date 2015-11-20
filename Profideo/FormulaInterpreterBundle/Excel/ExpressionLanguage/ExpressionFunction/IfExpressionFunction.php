@@ -26,4 +26,20 @@ class IfExpressionFunction extends ExpressionFunction
 
         return $condition ? $returnIfTrue : $returnIfFalse;
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function getMinArguments()
+    {
+        return 2;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function getMaxArguments()
+    {
+        return 3;
+    }
 }
