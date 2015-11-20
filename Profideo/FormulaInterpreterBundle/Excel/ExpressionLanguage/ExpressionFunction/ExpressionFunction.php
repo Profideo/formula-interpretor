@@ -25,27 +25,10 @@ use Profideo\Component\ExpressionLanguage\ExpressionFunction as BaseExpressionFu
 abstract class ExpressionFunction extends BaseExpressionFunction
 {
     /**
-     * @var int
+     * @param string $name
      */
-    protected $minArguments;
-
-    /**
-     * @var int
-     */
-    protected $maxArguments;
-
-    /**
-     * @param string   $name
-     * @param callable $compiler
-     * @param callable $evaluator
-     * @param int      $minArguments
-     * @param int      $maxArguments
-     */
-    public function __construct($name, $compiler, $evaluator, $minArguments = 0, $maxArguments = -1)
+    public function __construct($name)
     {
-        $this->minArguments = $minArguments;
-        $this->maxArguments = $maxArguments;
-
         parent::__construct(
             $name,
             function () {
@@ -72,21 +55,31 @@ abstract class ExpressionFunction extends BaseExpressionFunction
     abstract protected function getEvaluatorFunction();
 
     /**
-     * @param ExpressionFunction $expressionFunction
-     * @param $arguments
+     * @return int
      */
-    private function validateCompilerFunctionArguments(ExpressionFunction $expressionFunction, $arguments)
+    abstract protected function getMinArguments();
+
+    /**
+     * @return int
+     */
+    abstract protected function getMaxArguments();
+
+    /**
+     * @param ExpressionFunction $expressionFunction
+     * @param array              $arguments
+     */
+    private function validateCompilerFunctionArguments(ExpressionFunction $expressionFunction, array $arguments)
     {
-        $this->validateArguments(count($arguments), $this->minArguments, $this->maxArguments);
+        $this->validateArguments(count($arguments), $this->getMinArguments(), $this->getMaxArguments());
     }
 
     /**
      * @param ExpressionFunction $expressionFunction
-     * @param $arguments
+     * @param array              $arguments
      */
-    private function validateEvaluatorFunctionArguments(ExpressionFunction $expressionFunction, $arguments)
+    private function validateEvaluatorFunctionArguments(ExpressionFunction $expressionFunction, array $arguments)
     {
-        $this->validateArguments(count($arguments) - 1, $this->minArguments, $this->maxArguments);
+        $this->validateArguments(count($arguments) - 1, $this->getMinArguments(), $this->getMaxArguments());
     }
 
     /**

@@ -34,4 +34,20 @@ class ConcatenateExpressionFunction extends ExpressionFunction
 
         return implode('', $values);
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function getMinArguments()
+    {
+        return 1;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function getMaxArguments()
+    {
+        return -1;
+    }
 }

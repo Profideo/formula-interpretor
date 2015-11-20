@@ -15,4 +15,20 @@ class WorldExpressionFunction extends ExpressionFunction
     {
         return 'WORLD !';
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function getMinArguments()
+    {
+        return 0;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function getMaxArguments()
+    {
+        return 0;
+    }
 }
