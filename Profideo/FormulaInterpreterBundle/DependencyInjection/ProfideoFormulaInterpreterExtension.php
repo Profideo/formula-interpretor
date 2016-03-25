@@ -69,7 +69,13 @@ class ProfideoFormulaInterpreterExtension extends Extension
                     $functionDefinition->setClass($container->getParameter($functionClassParameter));
                     $functionDefinition->setArguments(array($translation));
                     $functionDefinition->setPublic(false);
-                    $functionDefinition->setScope(ContainerInterface::SCOPE_PROTOTYPE);
+
+                    // SF >= 2.8
+                    if (method_exists('Symfony\Component\DependencyInjection\Definition', 'setShared')) {
+                        $functionDefinition->setShared(false);
+                    } else {
+                        $functionDefinition->setScope(ContainerInterface::SCOPE_PROTOTYPE);
+                    }
 
                     foreach ($function['services'] as $service) {
                         $parameters = array();
