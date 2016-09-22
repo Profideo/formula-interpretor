@@ -54,7 +54,9 @@ class ProfideoFormulaInterpreterExtension extends Extension
                 }
             }
 
-            $functions = array_merge($this->getDefaultExcelFunctions(), $functions);
+            if (false !== $scope['use_default_functions']) {
+                $functions = array_merge($this->getDefaultExcelFunctions(), $functions);
+            }
 
             // Defines ExpressionFunction services.
             $functionDefinitions = array();
@@ -115,7 +117,10 @@ class ProfideoFormulaInterpreterExtension extends Extension
                 }
             }
 
-            $constantList = array_merge($this->getDefaultExcelConstants(), $constantList);
+            if (false !== $scope['use_default_constants']) {
+                $constantList = array_merge($this->getDefaultExcelConstants(), $constantList);
+            }
+
             $constants = array();
             foreach ($constantList as $constant) {
                 foreach ($constant['translations'] as $translation) {
