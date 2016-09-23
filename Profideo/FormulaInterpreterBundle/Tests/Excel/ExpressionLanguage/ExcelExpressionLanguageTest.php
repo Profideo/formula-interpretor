@@ -940,4 +940,110 @@ class ExcelExpressionLanguageTest extends AbstractProfideoFormulaInterpreterExte
 
         $this->assertSame('test 1 test 2 test 3', $formulaInterpreter->evaluate('test()'));
     }
+
+    public function useDefaultFunctionsConstantsDataProvider()
+    {
+        return array(
+            array(
+                'expression' => '=OR(TRUE)',
+                'result' => null,
+                'config' => 'config-5',
+                'service' => 'test5_1',
+                'exception' => 'The function "OR" does not exist around position 1.',
+            ),
+            array(
+                'expression' => '=OR(TRUE)',
+                'result' => true,
+                'config' => 'config-5',
+                'service' => 'test5_2',
+            ),
+            array(
+                'expression' => '=AND(OR(TRUE), TRUE)',
+                'result' => null,
+                'config' => 'config-5',
+                'service' => 'test5_2',
+                'exception' => 'The function "AND" does not exist around position 1.',
+            ),
+            array(
+                'expression' => '=OR(TRUE)',
+                'result' => true,
+                'config' => 'config-5',
+                'service' => 'test5_3',
+            ),
+            array(
+                'expression' => '=AND(OR(TRUE), TRUE)',
+                'result' => true,
+                'config' => 'config-5',
+                'service' => 'test5_3',
+            ),
+            array(
+                'expression' => '=VRAI',
+                'result' => null,
+                'config' => 'config-5',
+                'service' => 'test5_4',
+                'exception' => 'Variable "VRAI" is not valid around position 1.',
+            ),
+            array(
+                'expression' => '=HELLO',
+                'result' => 'HELLO',
+                'config' => 'config-5',
+                'service' => 'test5_5',
+            ),
+            array(
+                'expression' => '=VRAI',
+                'result' => null,
+                'config' => 'config-5',
+                'service' => 'test5_5',
+                'exception' => 'Variable "VRAI" is not valid around position 1.',
+            ),
+            array(
+                'expression' => '=HELLO',
+                'result' => 'HELLO',
+                'config' => 'config-5',
+                'service' => 'test5_6',
+            ),
+            array(
+                'expression' => '=VRAI',
+                'result' => true,
+                'config' => 'config-5',
+                'service' => 'test5_6',
+            ),
+            array(
+                'expression' => '=VRAI',
+                'result' => true,
+                'config' => 'config-5',
+                'service' => 'test5_7',
+            ),
+        );
+    }
+
+    /**
+     * @dataProvider useDefaultFunctionsConstantsDataProvider
+     *
+     * @param $expression
+     * @param $expectedResult
+     * @param string $config
+     * @param string $service
+     * @param null $exception
+     */
+    public function testUseDefaultFunctionsConstants($expression, $expectedResult, $config, $service, $exception = null)
+    {
+        $this->loadConfiguration($this->container, $config);
+        $this->container->compile();
+
+        $formulaInterpreter = $this->container->get("profideo.formula_interpreter.excel.$service");
+
+        if (null !== $exception) {
+            $this->setExpectedException(
+                '\Profideo\Component\ExpressionLanguage\SyntaxError',
+                $exception
+            );
+        }
+
+        $result = $formulaInterpreter->evaluate($expression);
+
+        if (!$exception) {
+            $this->assertSame($result, $expectedResult);
+        }
+    }
 }

@@ -54,7 +54,7 @@ class ProfideoFormulaInterpreterExtension extends Extension
                 }
             }
 
-            if (false !== $scope['use_default_functions']) {
+            if ($scope['use_default_functions']) {
                 $functions = array_merge($this->getDefaultExcelFunctions(), $functions);
             }
 
@@ -117,7 +117,7 @@ class ProfideoFormulaInterpreterExtension extends Extension
                 }
             }
 
-            if (false !== $scope['use_default_constants']) {
+            if ($scope['use_default_constants']) {
                 $constantList = array_merge($this->getDefaultExcelConstants(), $constantList);
             }
 
