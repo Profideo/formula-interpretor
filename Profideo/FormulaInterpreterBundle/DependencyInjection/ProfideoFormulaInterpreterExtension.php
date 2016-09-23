@@ -40,13 +40,11 @@ class ProfideoFormulaInterpreterExtension extends Extension
     private function buildFormulaInterpreterExcelDefinition(ContainerBuilder $container, $config)
     {
         foreach ($config['scopes'] as $scopeName => $scope) {
-            if (0 < count($diffs = array_diff($scope['functions'], array_keys($config['functions'])))) {
-                throw new InvalidConfigurationException(
-                    sprintf("Unknown function(s) in '%s' scope : %s", $scopeName, implode(', ', $diffs))
-                );
-            }
-
             $functions = $config['functions'];
+
+            if (! $scope['use_default_functions']) {
+                $functions = array_merge($this->getDefaultExcelFunctions(), $functions);
+            }
 
             foreach ($functions as $functionName => $function) {
                 if (!in_array($functionName, $scope['functions'])) {
@@ -56,6 +54,12 @@ class ProfideoFormulaInterpreterExtension extends Extension
 
             if ($scope['use_default_functions']) {
                 $functions = array_merge($this->getDefaultExcelFunctions(), $functions);
+            }
+
+            if (0 < count($diffs = array_diff($scope['functions'], array_keys($functions)))) {
+                throw new InvalidConfigurationException(
+                    sprintf("Unknown function(s) in '%s' scope : %s", $scopeName, implode(', ', $diffs))
+                );
             }
 
             // Defines ExpressionFunction services.
@@ -103,13 +107,11 @@ class ProfideoFormulaInterpreterExtension extends Extension
             $expressionLanguageProvider->setPublic(false);
             $container->setDefinition("profideo.formula_interpreter.excel.expression_language_provider.$scopeName", $expressionLanguageProvider);
 
-            if (0 < count($diffs = array_diff($scope['constants'], array_keys($config['constants'])))) {
-                throw new InvalidConfigurationException(
-                    sprintf("Unknown constant(s) in '%s' scope : %s", $scopeName, implode(', ', $diffs))
-                );
-            }
-
             $constantList = $config['constants'];
+
+            if (! $scope['use_default_constants']) {
+                $constantList = array_merge($this->getDefaultExcelConstants(), $constantList);
+            }
 
             foreach ($constantList as $constantName => $constant) {
                 if (!in_array($constantName, $scope['constants'])) {
@@ -119,6 +121,12 @@ class ProfideoFormulaInterpreterExtension extends Extension
 
             if ($scope['use_default_constants']) {
                 $constantList = array_merge($this->getDefaultExcelConstants(), $constantList);
+            }
+
+            if (0 < count($diffs = array_diff($scope['constants'], array_keys($constantList)))) {
+                throw new InvalidConfigurationException(
+                    sprintf("Unknown constant(s) in '%s' scope : %s", $scopeName, implode(', ', $diffs))
+                );
             }
 
             $constants = array();

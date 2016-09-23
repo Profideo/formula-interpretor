@@ -1,16 +1,9 @@
 profideo_formula_interpreter:
     excel:
-        functions:
-            or:
-                class: Profideo\FormulaInterpreterBundle\Excel\ExpressionLanguage\ExpressionFunction\OrExpressionFunction
-                translations: [OR, OU]
         constants:
             hello:
                 value: "HELLO"
                 translations: [hello]
-            true:
-                value: true
-                translations: [TRUE, VRAI]
         scopes:
             test5_1:
                 start_with_equal: false
@@ -37,7 +30,7 @@ profideo_formula_interpreter:
                 use_default_functions: true
                 use_default_constants: false
             test5_6:
-                constants: [hello, true]
+                constants: [hello, "true"]
                 start_with_equal: false
                 minimum_number_of_functions: 0
                 use_default_functions: true
