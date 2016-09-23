@@ -19,6 +19,9 @@
         "php": ">=5.3.9",
         "profideo-ci/expression-language": "dev-master"
     },
+    "require-dev": {
+        "phpunit/phpunit": "~4.1"
+    },
     "autoload": {
         "psr-0": {
             "Profideo\\FormulaInterpreterBundle": ""
