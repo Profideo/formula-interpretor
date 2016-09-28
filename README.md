@@ -1,6 +1,5 @@
 # Profideo Formula Interpreter
 
-
-This bundle is used to interprete excel based formulas
-
-== Documentation will be updated ... soon
+This repository will soon be removed and replaced by
+[formula-interpreter](https://github.com/Profideo/formula-interpreter) and
+[formula-interpreter-bundle](https://github.com/Profideo/formula-interpreter-bundle) instead. 
