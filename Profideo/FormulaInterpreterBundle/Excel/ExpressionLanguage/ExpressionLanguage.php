@@ -69,6 +69,24 @@ class ExpressionLanguage extends BaseExpressionLanguage
         return $expression;
     }
 
+    protected function getParser()
+    {
+        if (null === $this->parser) {
+            $this->parser = new ExcelParser($this->functions);
+        }
+
+        return $this->parser;
+    }
+
+    protected function getLexer()
+    {
+        if (null === $this->lexer) {
+            $this->lexer = new ExcelLexer();
+        }
+
+        return $this->lexer;
+    }
+
     /**
      * Compiles an expression source code.
      *
@@ -127,11 +145,6 @@ class ExpressionLanguage extends BaseExpressionLanguage
         // strtoupper everything except text between quotes.
         $expression = preg_replace_callback(static::CALCULATION_REGEXP_NOT_TEXT, function ($match) {
             return strtoupper($match[0]);
-        }, $expression);
-
-        // Replaces semicolons ";" by commas "," except when it's between quotes.
-        $expression = preg_replace_callback(static::CALCULATION_REGEXP_SEMICOLON_NOT_IN_TEXT, function () {
-            return ',';
         }, $expression);
 
         // Replace all singles equal signs by doubles equal signs except when it's between quotes.
