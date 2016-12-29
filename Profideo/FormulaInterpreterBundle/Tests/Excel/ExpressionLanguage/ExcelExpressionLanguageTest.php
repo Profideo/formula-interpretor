@@ -43,6 +43,16 @@ class ExcelExpressionLanguageTest extends AbstractProfideoFormulaInterpreterExte
                 'expression' => '=IF(1<=2;"TE<=ST")',
                 'result' => 'IF(1<=2;"TE<=ST")',
             ),
+            array(
+                'expression' => '=IF(1<=2,"TE<=ST")',
+                'result' => false,
+                'exception' => 'Unexpected character "," around position 7.',
+            ),
+            array(
+                'expression' => '=IF(1<=2;"TE<=ST","TEST")',
+                'result' => false,
+                'exception' => 'Unexpected character "," around position 16.',
+            ),
         );
     }
 
@@ -52,14 +62,25 @@ class ExcelExpressionLanguageTest extends AbstractProfideoFormulaInterpreterExte
      * @param $expression
      * @param $result
      */
-    public function testReplaces($expression, $result)
+    public function testReplaces($expression, $result, $exception = null)
     {
         $this->loadConfiguration($this->container, 'config-1');
         $this->container->compile();
 
         $formulaInterpreter = $this->container->get('profideo.formula_interpreter.excel.test1');
 
-        $this->assertSame($result, $formulaInterpreter->parse($expression)->__toString());
+        if (null !== $exception) {
+            $this->setExpectedException(
+                '\Profideo\Component\ExpressionLanguage\SyntaxError',
+                $exception
+            );
+        }
+
+        $parsedExpression = $formulaInterpreter->parse($expression)->__toString();
+
+        if (!$exception) {
+            $this->assertSame($result, $parsedExpression);
+        }
     }
 
     public function typesDataProvider()

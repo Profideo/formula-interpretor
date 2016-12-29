@@ -1,13 +1,5 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: isow
- * Date: 28/12/16
- * Time: 17:47
- */
-
 namespace Profideo\FormulaInterpreterBundle\Excel\ExpressionLanguage;
-
 
 use Profideo\Component\ExpressionLanguage\Parser;
 use Profideo\Component\ExpressionLanguage\Token;
@@ -82,8 +74,6 @@ class ExcelParser extends Parser
 
         return $node;
     }
-
-
 
     /**
      * Parses arguments.

@@ -1,15 +1,8 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: isow
- * Date: 28/12/16
- * Time: 17:49
- */
-
 namespace Profideo\FormulaInterpreterBundle\Excel\ExpressionLanguage;
 
-
 use Profideo\Component\ExpressionLanguage\Lexer;
+use Profideo\Component\ExpressionLanguage\SyntaxError;
 use Profideo\Component\ExpressionLanguage\Token;
 use Profideo\Component\ExpressionLanguage\TokenStream;
 
