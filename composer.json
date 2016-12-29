@@ -17,7 +17,7 @@
     }],
     "require": {
         "php": ">=5.3.9",
-        "profideo-ci/expression-language": "dev-master"
+        "profideo-ci/expression-language": "dev-21842-fix-semi-colon-as-separator"
     },
     "autoload": {
         "psr-0": {
