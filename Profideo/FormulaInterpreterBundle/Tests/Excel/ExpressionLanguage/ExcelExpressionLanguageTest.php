@@ -21,27 +21,37 @@ class ExcelExpressionLanguageTest extends AbstractProfideoFormulaInterpreterExte
         return array(
             array(
                 'expression' => '=IF(TRUE;"TE;ST")',
-                'result' => 'IF(TRUE,"TE;ST")',
+                'result' => 'IF(TRUE;"TE;ST")',
             ),
             array(
                 'expression' => '=IF(1=2;"TE=ST")',
-                'result' => 'IF(1==2,"TE=ST")',
+                'result' => 'IF(1==2;"TE=ST")',
             ),
             array(
                 'expression' => '=IF(1<>2;"TE<>ST")',
-                'result' => 'IF(1!=2,"TE<>ST")',
+                'result' => 'IF(1!=2;"TE<>ST")',
             ),
             array(
                 'expression' => '=IF(1!=2;"TE!=ST")',
-                'result' => 'IF(1!=2,"TE!=ST")',
+                'result' => 'IF(1!=2;"TE!=ST")',
             ),
             array(
                 'expression' => '=IF(1>=2;"TE>=ST")',
-                'result' => 'IF(1>=2,"TE>=ST")',
+                'result' => 'IF(1>=2;"TE>=ST")',
             ),
             array(
                 'expression' => '=IF(1<=2;"TE<=ST")',
-                'result' => 'IF(1<=2,"TE<=ST")',
+                'result' => 'IF(1<=2;"TE<=ST")',
+            ),
+            array(
+                'expression' => '=IF(1<=2,"TE<=ST")',
+                'result' => false,
+                'exception' => 'Unexpected character "," around position 7.',
+            ),
+            array(
+                'expression' => '=IF(1<=2;"TE<=ST","TEST")',
+                'result' => false,
+                'exception' => 'Unexpected character "," around position 16.',
             ),
         );
     }
@@ -52,14 +62,25 @@ class ExcelExpressionLanguageTest extends AbstractProfideoFormulaInterpreterExte
      * @param $expression
      * @param $result
      */
-    public function testReplaces($expression, $result)
+    public function testReplaces($expression, $result, $exception = null)
     {
         $this->loadConfiguration($this->container, 'config-1');
         $this->container->compile();
 
         $formulaInterpreter = $this->container->get('profideo.formula_interpreter.excel.test1');
 
-        $this->assertSame($result, $formulaInterpreter->parse($expression)->__toString());
+        if (null !== $exception) {
+            $this->setExpectedException(
+                '\Profideo\Component\ExpressionLanguage\SyntaxError',
+                $exception
+            );
+        }
+
+        $parsedExpression = $formulaInterpreter->parse($expression)->__toString();
+
+        if (!$exception) {
+            $this->assertSame($result, $parsedExpression);
+        }
     }
 
     public function typesDataProvider()
@@ -484,19 +505,19 @@ class ExcelExpressionLanguageTest extends AbstractProfideoFormulaInterpreterExte
                 'exception' => 'Wrong number of arguments for MAX() function: 0 given, at least 1 expected.',
             ),
             array(
-                'expression' => '=mAx(2, 3, 1, 6, -9, 7)',
+                'expression' => '=mAx(2; 3; 1; 6; -9; 7)',
                 'result' => 7,
             ),
             array(
-                'expression' => '=max(5, "hello")',
+                'expression' => '=max(5; "hello")',
                 'result' => 5,
             ),
             array(
-                'expression' => '=max("hello", -1)',
+                'expression' => '=max("hello"; -1)',
                 'result' => 0,
             ),
             array(
-                'expression' => '=MAX(FAUX, 10)',
+                'expression' => '=MAX(FAUX; 10)',
                 'result' => 10,
             ),
         );
@@ -539,19 +560,19 @@ class ExcelExpressionLanguageTest extends AbstractProfideoFormulaInterpreterExte
                 'exception' => 'Wrong number of arguments for MIN() function: 0 given, at least 1 expected.',
             ),
             array(
-                'expression' => '=mIn(2, 3, 1, 6, -9, 7)',
+                'expression' => '=mIn(2; 3; 1; 6; -9; 7)',
                 'result' => -9,
             ),
             array(
-                'expression' => '=min(5, "hello")',
+                'expression' => '=min(5; "hello")',
                 'result' => 0,
             ),
             array(
-                'expression' => '=min("hello", -1)',
+                'expression' => '=min("hello"; -1)',
                 'result' => -1,
             ),
             array(
-                'expression' => '=MIN(FAUX, 10)',
+                'expression' => '=MIN(FAUX; 10)',
                 'result' => 0,
             ),
         );
@@ -667,19 +688,19 @@ class ExcelExpressionLanguageTest extends AbstractProfideoFormulaInterpreterExte
                 'exception' => 'Wrong number of arguments for POW() function: 1 given, 2 expected.',
             ),
             array(
-                'expression' => '=pOw("a", 2)',
+                'expression' => '=pOw("a"; 2)',
                 'result' => 0,
             ),
             array(
-                'expression' => '=pUiSsAnCe(2, 8)',
+                'expression' => '=pUiSsAnCe(2; 8)',
                 'result' => 256,
             ),
             array(
-                'expression' => '=POW(-1, 20)',
+                'expression' => '=POW(-1; 20)',
                 'result' => 1,
             ),
             array(
-                'expression' => '=puissance(0, 0)',
+                'expression' => '=puissance(0; 0)',
                 'result' => 1,
             ),
         );
@@ -727,35 +748,35 @@ class ExcelExpressionLanguageTest extends AbstractProfideoFormulaInterpreterExte
                 'exception' => 'Wrong number of arguments for ROUND() function: 1 given, 2 expected.',
             ),
             array(
-                'expression' => '=rOuNd("a", 0)',
+                'expression' => '=rOuNd("a"; 0)',
                 'result' => 0.0,
             ),
             array(
-                'expression' => '=rOuNd(3.4, 0)',
+                'expression' => '=rOuNd(3.4; 0)',
                 'result' => 3.0,
             ),
             array(
-                'expression' => '=ARRONDI(3.5, 0)',
+                'expression' => '=ARRONDI(3.5; 0)',
                 'result' => 4.0,
             ),
             array(
-                'expression' => '=aRrOnDi(3.6, 0)',
+                'expression' => '=aRrOnDi(3.6; 0)',
                 'result' => 4.0,
             ),
             array(
-                'expression' => '=ROUND(1.95583, 2)',
+                'expression' => '=ROUND(1.95583; 2)',
                 'result' => 1.96,
             ),
             array(
-                'expression' => '=ROUND(1241757, -3)',
+                'expression' => '=ROUND(1241757; -3)',
                 'result' => 1242000.0,
             ),
             array(
-                'expression' => '=ROUND(5.045, 2)',
+                'expression' => '=ROUND(5.045; 2)',
                 'result' => 5.05,
             ),
             array(
-                'expression' => '=ROUND(5.055, 2)',
+                'expression' => '=ROUND(5.055; 2)',
                 'result' => 5.06,
             ),
         );
