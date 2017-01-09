@@ -17,7 +17,7 @@
     }],
     "require": {
         "php": ">=5.3.9",
-        "profideo-ci/expression-language": "dev-master"
+        "profideo-ci/expression-language": "2.9"
     },
     "autoload": {
         "psr-0": {
