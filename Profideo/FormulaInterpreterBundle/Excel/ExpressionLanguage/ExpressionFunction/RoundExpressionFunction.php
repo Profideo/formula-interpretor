@@ -2,6 +2,8 @@
 
 namespace Profideo\FormulaInterpreterBundle\Excel\ExpressionLanguage\ExpressionFunction;
 
+use Profideo\FormulaInterpreterBundle\Excel\ExpressionLanguage\ExpressionError;
+
 /**
  * Represents the "ROUND" function that can be used in an expression.
  */
@@ -20,7 +22,21 @@ class RoundExpressionFunction extends ExpressionFunction
      */
     protected function getEvaluatorFunction()
     {
-        return round(func_get_arg(1), func_get_arg(2), PHP_ROUND_HALF_UP);
+        $args = func_get_args();
+
+        if (! is_numeric($args[1])) {
+            throw new ExpressionError(
+                sprintf('The function %s expects numeric as parameter 1 but "%s" given', $this->getName(), gettype($args[1]))
+            );
+        }
+
+        if (! is_int($args[2])) {
+            throw new ExpressionError(
+                sprintf('The function %s expects integer as parameter 2 but "%s" given', $this->getName(), gettype($args[2]))
+            );
+        }
+
+        return round($args[1], $args[2], PHP_ROUND_HALF_UP);
     }
 
     /**
