@@ -24,12 +24,6 @@ class RoundExpressionFunction extends ExpressionFunction
     {
         $args = func_get_args();
 
-        if (! is_numeric($args[1])) {
-            throw new ExpressionError(
-                sprintf('The function %s expects numeric as parameter 1 but "%s" given', $this->getName(), gettype($args[1]))
-            );
-        }
-
         if (! is_int($args[2])) {
             throw new ExpressionError(
                 sprintf('The function %s expects integer as parameter 2 but "%s" given', $this->getName(), gettype($args[2]))
