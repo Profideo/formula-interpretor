@@ -32,7 +32,7 @@ class ExcelLexer extends Lexer
                 continue;
             }
 
-            if (preg_match('/[0-9]+(?:\.[0-9]+)?/A', $expression, $match, null, $cursor)) {
+            if (preg_match('/[0-9]+(?:[\.|,][0-9]+)?/A', $expression, $match, null, $cursor)) {
                 // numbers
                 $number = (float) $match[0];  // floats
                 if (ctype_digit($match[0]) && $number <= PHP_INT_MAX) {
