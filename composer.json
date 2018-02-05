@@ -3,7 +3,7 @@
     "description": "Tool to interprete formulas",
     "keywords": ["Formula","Interpreter","Profideo"],
     "type": "library",
-    "license": "LGPL",
+    "license": "Apache-2.0",
     "minimum-stability": "dev",
     "authors": [
         {
