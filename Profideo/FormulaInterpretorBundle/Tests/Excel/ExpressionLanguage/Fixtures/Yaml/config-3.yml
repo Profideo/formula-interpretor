@@ -1,0 +1,27 @@
+profideo_formula_interpretor:
+    excel:
+        constants:
+            hello:
+                value: "HELLO"
+                translations: [hello]
+            bonjour:
+                value: "BONJOUR"
+                translations: [bonjour]
+        functions:
+            world:
+                class: Profideo\FormulaInterpretorBundle\Tests\Excel\ExpressionLanguage\Fixtures\WorldExpressionFunction
+                translations: [world]
+            monde:
+                class: Profideo\FormulaInterpretorBundle\Tests\Excel\ExpressionLanguage\Fixtures\MondeExpressionFunction
+                translations: [monde]
+        scopes:
+            test3_1:
+                constants: [hello]
+                functions: [world]
+                start_with_equal: false
+                minimum_number_of_functions: 0
+            test3_2:
+                constants: [bonjour]
+                functions: [monde]
+                start_with_equal: false
+                minimum_number_of_functions: 0

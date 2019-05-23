@@ -1,5 +1,5 @@
-# Profideo Formula Interpreter
+# Profideo Formula Interpretor
 
 This repository will soon be removed and replaced by
-[formula-interpreter](https://github.com/Profideo/formula-interpreter) and
-[formula-interpreter-bundle](https://github.com/Profideo/formula-interpreter-bundle) instead. 
+[formula-interpretor](https://github.com/Profideo/formula-interpretor) and
+[formula-interpretor-bundle](https://github.com/Profideo/formula-interpretor-bundle) instead. 

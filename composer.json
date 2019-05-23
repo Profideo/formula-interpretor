@@ -1,7 +1,7 @@
 {
     "name": "profideo/formula-interpretor",
     "description": "Tool to interprete formulas",
-    "keywords": ["Formula","Interpreter","Profideo"],
+    "keywords": ["Formula","Interpretor","Profideo"],
     "type": "library",
     "license": "Apache-2.0",
     "minimum-stability": "dev",
@@ -21,7 +21,7 @@
     },
     "autoload": {
         "psr-0": {
-            "Profideo\\FormulaInterpreterBundle": ""
+            "Profideo\\FormulaInterpretorBundle": ""
         }
     }
 }

@@ -1,4 +1,0 @@
-parameters:
-    profideo.formula_interpreter.excel.expression_language.class: Profideo\FormulaInterpreterBundle\Excel\ExpressionLanguage\ExpressionLanguage
-    profideo.formula_interpreter.excel.formula_interpreter.class: Profideo\FormulaInterpreterBundle\Excel\ExpressionLanguage\FormulaInterpreter
-    profideo.formula_interpreter.excel.expression_language_provider.class: Profideo\FormulaInterpreterBundle\Excel\ExpressionLanguage\ExpressionLanguageProvider

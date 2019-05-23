@@ -1,0 +1,6 @@
+profideo_formula_interpretor:
+    excel:
+        scopes:
+            test1:
+                start_with_equal: true
+                minimum_number_of_functions: 1
